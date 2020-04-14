@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #game {
+            width: 1440px;
+            height: 900px;
+            background: #000;
+            margin: auto;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #panel {
+            position: absolute;
+            height: 900px;
+        }
+
+        .scene {
+            width: 1440px;
+            height: 900px;
+            float: left;
+        }
+
+        #scene1 {
+            background: url(./scene/00.jpg);
+        }
+
+        #scene2 {
+            background: url(./scene/01.jpg);
+        }
+
+        #scene3 {
+            background: url(./scene/02.jpg);
+        }
+
+        #scene4 {
+            background: url(./scene/03.jpg);
+        }
+
+        #scene5 {
+            background: url(./scene/04.jpg);
+        }
+
+        input[type="button"] {
+            width: 120px;
+            height: 40px;
+        }
+
+        #game img {
+            position: absolute;
+            height: 150px;
+
+        }
+
+        #controller {
+            margin: auto;
+            height: 40px;
+            width: 1440px;
+            background: #fff;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="game">
+        <div id="controller">
+            <input type="button" value="遊戲開始" id="start-btn">
+            <input type="button" value="結束遊戲" id="over-btn">
+            <span>分數：<span id="text-score">0</span></span>
+            <span>剩餘時間：<span id="text-time">10</span>秒</span>
+            <span>生命值：<span id="text-life">10</span></span>
+        </div>
+        <div id="panel">
+            <div class="scene" id="scene1"></div>
+            <div class="scene" id="scene2"></div>
+            <div class="scene" id="scene3"></div>
+            <div class="scene" id="scene4"></div>
+            <div class="scene" id="scene5"></div>
+        </div>
+    </div>
+
+
+    <script src="jquery-3.5.0.min.js"></script>
+    <script>
+        $(function () {
+
+            // 分數
+            let score = 0;
+            // 剩餘時間
+            let timeleft = 30;
+            // 遊戲計時器
+            let gametimer = 0;
+            // 殭屍流水號
+            let zbid = 0;
+            //玩家生命
+            let life = 10;
+
+
+            // 畫面大小
+            let now = 0;
+            const sl = $(".scene").length;
+            $("#panel").css("width", sl * 1440);
+
+            // 換頁功能
+            const sceneChange = (Num) => {
+                now = Num;
+                const move = now * 1440;
+                $("#panel").stop(true, true)
+                $("#panel").animate({ left: `-${move}px` }, 1000)
+            }
+
+            const rand = (num) => {
+                return Math.round(Math.random() * num);
+            }
+
+            const movezb = (zbid) => {
+                $(`#zb${zbid}`).animate({
+                    // top: `${rand(900)}px`,
+                    // left: `${rand(1440) * (now + 1)}px`,
+                    height: "+=100px"
+                }, 5000, function () {
+                    atk();
+                })
+            }
+
+            const atk = () => {
+                life--;
+                $("#text-life").text(life);
+            }
+
+            $("#over-btn").click(function () {
+                sceneChange(0)
+            })
+
+            $("#start-btn").click(function () {
+                sceneChange(1)
+
+                // 停用開始按鈕
+                $(this).attr("disabled", true);
+
+                // 重設
+                score = 0;
+                $("#text-score").text(score);
+                timeleft = 30;
+                $("#text-time").text(timeleft);
+                life = 10;
+                $("#text-life").text(life);
+
+                // 遊戲倒數
+                gametimer = setInterval(() => {
+                    // 倒數
+                    timeleft--;
+                    $("#text-time").text(timeleft);
+
+                    if (timeleft == 0) {
+                        clearInterval(gametimer);
+                        // 啟用開始按鈕
+                        $(this).attr("disabled", false);
+                        setTimeout(() => {
+                            alert("時間到");
+                        }, 100);
+                        // 清場
+                        // $("#game img").remove();
+                        zbid = 0;
+                    }
+                    else {
+
+                        // 隨機
+                        const num = rand(10);
+
+                        // 如果抽到數字大於5，生一個殭屍
+                        if (num > 5) {
+                            $(`#scene${now + 1}`).append(`<img src="./tank.gif" id="zb${zbid}">`);
+                            $(`#zb${zbid}`).css({
+                                bottom: `${rand(200)}px`,
+                                left: `${(1440 * now) + rand(1440)}px`
+                                // top: rand(50) + "%",
+                                // left: rand(50) + "%"
+                            })
+                            movezb(zbid)
+
+                            zbid++;
+                        }
+                    }
+
+                }, 1000);
+
+
+            })
+
+            $("#game").on("click", "img", function () {
+                $(this).attr("src", "./blood.png")
+                $(this).stop();
+                $(this).css("pointer-events", "none");
+
+                score++;
+                $("#text-score").text(score);
+            })
+
+
+        })
+
+
+    </script>
+</body>
+
+</html>
