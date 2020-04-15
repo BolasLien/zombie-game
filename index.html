@@ -31,7 +31,7 @@
         }
 
         #scene2 {
-            background: url(./scene/01.jpg);
+            background: url(./scene/02.jpg);
         }
 
         #scene3 {
@@ -96,7 +96,7 @@
             // 遊戲計時器
             let gametimer = 0;
             // 殭屍流水號
-            let zbid = 0;
+            let itemid = 0;
             //玩家生命
             let life = 10;
 
@@ -118,25 +118,22 @@
                 return Math.round(Math.random() * num);
             }
 
-            const movezb = (zbid) => {
-                $(`#zb${zbid}`).animate({
-                    // top: `${rand(900)}px`,
-                    // left: `${rand(1440) * (now + 1)}px`,
-                    height: "+=100px"
-                }, 5000, function () {
-                    atk();
-                })
-            }
+            const gameOver = () => {
+                clearInterval(gametimer);
+                // 啟用開始按鈕
+                $("#start-btn").attr("disabled", false);
 
-            const atk = () => {
-                life--;
-                $("#text-life").text(life);
+                // 清場
+                $("#game img").remove();
+                itemid = 0;
+                sceneChange(0)
             }
 
             $("#over-btn").click(function () {
-                sceneChange(0)
+                gameOver();
             })
 
+            //遊戲開始按鈕
             $("#start-btn").click(function () {
                 sceneChange(1)
 
@@ -157,35 +154,15 @@
                     timeleft--;
                     $("#text-time").text(timeleft);
 
-                    if (timeleft == 0) {
-                        clearInterval(gametimer);
-                        // 啟用開始按鈕
-                        $(this).attr("disabled", false);
+                    if (timeleft == 0 || life == 0) {
                         setTimeout(() => {
-                            alert("時間到");
+                            alert("遊戲結束");
                         }, 100);
-                        // 清場
-                        // $("#game img").remove();
-                        zbid = 0;
+                        gameOver();
                     }
                     else {
 
-                        // 隨機
-                        const num = rand(10);
-
-                        // 如果抽到數字大於5，生一個殭屍
-                        if (num > 5) {
-                            $(`#scene${now + 1}`).append(`<img src="./tank.gif" id="zb${zbid}">`);
-                            $(`#zb${zbid}`).css({
-                                bottom: `${rand(200)}px`,
-                                left: `${(1440 * now) + rand(1440)}px`
-                                // top: rand(50) + "%",
-                                // left: rand(50) + "%"
-                            })
-                            movezb(zbid)
-
-                            zbid++;
-                        }
+                        createItem();
                     }
 
                 }, 1000);
@@ -193,13 +170,180 @@
 
             })
 
+            //創建一個東西
+            const createItem = () => {
+                const r = rand(100);
+                let src = "";
+                let name = "";
+
+
+                if (r > 10 && r <= 30) {
+                    //fat
+                    src = "./fat.gif"
+                    name = "fat";
+                }
+                else if (r > 31 && r <= 40) {
+                    //hunter
+                    src = "./hunter.gif"
+                    name = "hunter";
+
+                }
+                else if (r > 41 && r <= 70) {
+                    //joker
+                    src = "./joker.gif"
+                    name = "joker";
+
+                }
+                else if (r > 71 && r <= 80) {
+                    //witch-run
+                    src = "./witch.gif"
+                    name = "witch";
+
+                }
+                else if (r > 81 && r <= 90) {
+                    //tank
+                    src = "./tank.gif"
+                    name = "tank";
+
+                }
+                else {
+                    //other
+                    src = "./life.png"
+                    name = "life";
+                }
+
+                src = "./joker.gif"
+                name = "joker";
+                $(`#panel`).append(`<img src=${src} id=item${itemid} class=${name}>`);
+                setItemPosition($(`#item${itemid}`));
+                if (isEnemy($(`#item${itemid}`))) {
+                    moveEnemy($(`#item${itemid}`))
+                }
+                itemid++;
+            }
+
+            const isEnemy = (item) => {
+                return item.hasClass("fat") || item.hasClass("tank") || item.hasClass("witch") || item.hasClass("joker") || item.hasClass("hunter");
+            }
+
+            const getItemName = (item) => {
+                let name = "";
+
+                if (item.hasClass("fat")) { name = "fat"; }
+                else if (item.hasClass("tank")) { name = "tank"; }
+                else if (item.hasClass("witch")) { name = "witch"; }
+                else if (item.hasClass("joker")) { name = "joker"; }
+                else if (item.hasClass("hunter")) { name = "hunter"; }
+                else if (item.hasClass("life")) { name = "life"; }
+
+                return name;
+            }
+
+            const setItemPosition = (item) => {
+                console.log(getItemName(item));
+                switch (getItemName(item)) {
+                    case "fat":
+                        item.css({
+                            bottom: `${rand(200) + 400}px`,
+                            left: `${(1440 * now) + rand(400)}px`
+                        })
+                        break;
+                    case "tank":
+                        item.css({
+                            bottom: `${rand(200)}px`,
+                            left: `${(1440 * now) + rand(1000)}px`
+                        })
+                        break;
+                    case "witch":
+                        item.css({
+                            bottom: `${rand(200)}px`,
+                            left: `${(1440 * now) + rand(1000)}px`
+                        })
+                        break;
+                    case "joker":
+                        item.css({
+                            bottom: `${150 + rand(200)}px`,
+                            left: `${(1440 * now) + 1000 + rand(200)}px`
+                        })
+                        break;
+                    case "hunter":
+                        item.css({
+                            bottom: `${rand(200)}px`,
+                            left: `${(1440 * now) + 1000 + rand(200)}px`
+                        })
+                        break;
+                    case "life":
+                        item.css({
+                            bottom: `${rand(200)}px`,
+                            left: `${(1440 * now) + rand(1000)}px`
+                        })
+                        break;
+                }
+
+            }
+
+            const moveEnemy = (enemy) => {
+                switch (getItemName(enemy)) {
+                    case "fat":
+                        enemy.animate({
+                            bottom: `-${rand(100)}px`,
+                            left: `${(1440 * now) + rand(1000)}px`,
+                            height: `+=300px`
+                        }, 3000, function () {
+                            atk();
+                        })
+                        break;
+                    case "tank":
+                        enemy.animate({
+                            height: "+=100px"
+                        }, 5000, function () {
+                            atk();
+                        })
+                        break;
+                    case "witch":
+
+                        break;
+                    case "joker":
+                        enemy.animate({
+                            bottom: `-${rand(100)}px`,
+                            left: `${(1440 * now) + rand(1000)}px`,
+                            height: `+=200px`
+                        }, 3000, function () {
+                            atk();
+                        })
+                        break;
+                    case "hunter":
+                        break;
+                }
+            }
+
+            const atk = () => {
+                life--;
+                $("#text-life").text(life);
+
+                $(`#panel`).append(`<div style=" backgroun:#f00; width:1440px height:900px;"></div>`);
+
+            }
+
+            //點擊item事件
             $("#game").on("click", "img", function () {
-                $(this).attr("src", "./blood.png")
-                $(this).stop();
+                if (isEnemy($(this))) {
+                    $(this).attr("src", "./blood.png")
+                    $(this).stop();
+                    score++;
+                    $("#text-score").text(score);
+
+                }
+                else {
+                    $(this).remove();
+                    $(this).stop();
+                    life++;
+                    $("#text-life").text(life);
+                }
+
+
                 $(this).css("pointer-events", "none");
 
-                score++;
-                $("#text-score").text(score);
             })
 
 
