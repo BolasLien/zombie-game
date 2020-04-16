@@ -31,7 +31,7 @@
         }
 
         #scene2 {
-            background: url(./scene/02.jpg);
+            background: url(./scene/01.jpg);
         }
 
         #scene3 {
@@ -99,7 +99,8 @@
             let itemid = 0;
             //玩家生命
             let life = 10;
-
+            // 現在關卡
+            let level = 0;
 
             // 畫面大小
             let now = 0;
@@ -114,19 +115,39 @@
                 $("#panel").animate({ left: `-${move}px` }, 1000)
             }
 
+            // 隨機數字
             const rand = (num) => {
                 return Math.round(Math.random() * num);
             }
 
+            //遊戲結束
             const gameOver = () => {
                 clearInterval(gametimer);
                 // 啟用開始按鈕
                 $("#start-btn").attr("disabled", false);
 
                 // 清場
+                $("#game img").stop();
                 $("#game img").remove();
                 itemid = 0;
                 sceneChange(0)
+
+                level = 0;
+            }
+
+            //換關卡
+            const levelChange = (num) => {
+                switch (num) {
+                    case 1:
+                        console.log("level 1");
+                        break;
+                    case 2:
+                        console.log("level 2");
+                        break;
+                    case 3:
+                        console.log("level 3");
+                        break;
+                }
             }
 
             $("#over-btn").click(function () {
@@ -154,16 +175,19 @@
                     timeleft--;
                     $("#text-time").text(timeleft);
 
-                    if (timeleft == 0 || life == 0) {
-                        setTimeout(() => {
-                            alert("遊戲結束");
-                        }, 100);
+                    if (timeleft == 0 || life <= 0) {
+                        console.log((timeleft == 0) ? "時間到" : "你已經死了");
                         gameOver();
                     }
                     else {
-
-                        createItem();
+                        for (let i = 0; i < 5; i++) {
+                            if (rand(100) > 80)
+                                createItem();
+                        }
                     }
+
+
+
 
                 }, 1000);
 
@@ -178,31 +202,33 @@
 
 
                 if (r > 10 && r <= 30) {
-                    //fat
-                    src = "./fat.gif"
-                    name = "fat";
+                    //boomer
+                    src = "./boomer/boomer.gif"
+                    name = "boomer";
                 }
                 else if (r > 31 && r <= 40) {
-                    //hunter
-                    src = "./hunter.gif"
-                    name = "hunter";
+                    //smoke
+                    src = "./smoke/smoke.gif"
+                    name = "smoke";
 
                 }
                 else if (r > 41 && r <= 70) {
-                    //joker
-                    src = "./joker.gif"
-                    name = "joker";
+                    //chager
+                    src = "./chager/chager.gif"
+                    name = "chager";
 
                 }
-                else if (r > 71 && r <= 80) {
-                    //witch-run
-                    src = "./witch.gif"
-                    name = "witch";
+                else if (r > 71 && r <= 80) { //累了，witch先不寫
+                    //witch
+                    // src = "./witch.gif"
+                    // name = "witch";
+                    src = "./chager/chager.gif"
+                    name = "chager";
 
                 }
                 else if (r > 81 && r <= 90) {
                     //tank
-                    src = "./tank.gif"
+                    src = (rand(10) > 5) ? "./tank/tank.gif" : "./tank/tank-run.gif";
                     name = "tank";
 
                 }
@@ -212,116 +238,165 @@
                     name = "life";
                 }
 
-                src = "./joker.gif"
-                name = "joker";
+                src = "./boomer/boomer.gif"
+                name = "boomer";
                 $(`#panel`).append(`<img src=${src} id=item${itemid} class=${name}>`);
+
                 setItemPosition($(`#item${itemid}`));
-                if (isEnemy($(`#item${itemid}`))) {
-                    moveEnemy($(`#item${itemid}`))
-                }
+                moveItem($(`#item${itemid}`))
+
                 itemid++;
             }
 
+            //是不是怪物
             const isEnemy = (item) => {
-                return item.hasClass("fat") || item.hasClass("tank") || item.hasClass("witch") || item.hasClass("joker") || item.hasClass("hunter");
+                return item.hasClass("boomer") || item.hasClass("tank") || item.hasClass("witch") || item.hasClass("chager") || item.hasClass("smoke");
             }
 
+            //取得物品名稱
             const getItemName = (item) => {
                 let name = "";
 
-                if (item.hasClass("fat")) { name = "fat"; }
+                if (item.hasClass("boomer")) { name = "boomer"; }
                 else if (item.hasClass("tank")) { name = "tank"; }
                 else if (item.hasClass("witch")) { name = "witch"; }
-                else if (item.hasClass("joker")) { name = "joker"; }
-                else if (item.hasClass("hunter")) { name = "hunter"; }
+                else if (item.hasClass("chager")) { name = "chager"; }
+                else if (item.hasClass("smoke")) { name = "smoke"; }
                 else if (item.hasClass("life")) { name = "life"; }
 
                 return name;
             }
 
+            //設定東西的位置
             const setItemPosition = (item) => {
-                console.log(getItemName(item));
-                switch (getItemName(item)) {
-                    case "fat":
-                        item.css({
-                            bottom: `${rand(200) + 400}px`,
-                            left: `${(1440 * now) + rand(400)}px`
-                        })
-                        break;
-                    case "tank":
-                        item.css({
-                            bottom: `${rand(200)}px`,
-                            left: `${(1440 * now) + rand(1000)}px`
-                        })
-                        break;
-                    case "witch":
-                        item.css({
-                            bottom: `${rand(200)}px`,
-                            left: `${(1440 * now) + rand(1000)}px`
-                        })
-                        break;
-                    case "joker":
-                        item.css({
-                            bottom: `${150 + rand(200)}px`,
-                            left: `${(1440 * now) + 1000 + rand(200)}px`
-                        })
-                        break;
-                    case "hunter":
-                        item.css({
-                            bottom: `${rand(200)}px`,
-                            left: `${(1440 * now) + 1000 + rand(200)}px`
-                        })
-                        break;
-                    case "life":
-                        item.css({
-                            bottom: `${rand(200)}px`,
-                            left: `${(1440 * now) + rand(1000)}px`
-                        })
-                        break;
-                }
+                console.log("Set " + getItemName(item) + " Position");
+                item.fadeTo(10, 0, function () {
+                    switch (getItemName(item)) {
+                        case "boomer":
+                            item.css({
+                                bottom: `${rand(200) + 400}px`,
+                                left: `${(1440 * now) + rand(400)}px`
+                            })
+                            break;
+                        case "tank":
+                            item.css({
+                                height: `+=50px`,
+                                bottom: `${rand(200)}px`,
+                                left: `${(1440 * now) + rand(1000)}px`
+                            })
+                            break;
+                        case "witch":
+                            item.css({
+                                bottom: `${rand(200)}px`,
+                                left: `${(1440 * now) + rand(1000)}px`
+                            })
+                            break;
+                        case "chager":
+                            item.css({
+                                height: `+=50px`,
+                                bottom: `${rand(200)}px`,
+                                left: `${(1440 * now) + 1000 + rand(200)}px`
+                            })
+                            break;
+                        case "smoke":
+                            item.css({
+                                height: `+=150px`,
+                                bottom: `${rand(100)}px`,
+                                left: `${(1440 * now) + rand(400)}px`
+                            })
+                            break;
+                        case "life":
+                            item.css({
+                                height: `100px`,
+                                bottom: `${rand(200)}px`,
+                                left: `${(1440 * now) + rand(1000)}px`
+                            })
+                            break;
+                    }
+                })
+
+
 
             }
 
-            const moveEnemy = (enemy) => {
+            // 移動東西
+            const moveItem = (item) => {
+                item.fadeTo("slow", 1, function () {
+
+                    switch (getItemName(item)) {
+                        case "boomer":
+                            item.animate({
+                                bottom: `-${rand(100)}px`,
+                                left: `${(1440 * now) + rand(1000)}px`,
+                                height: `+=300px`
+                            }, 3000, function () {
+                                item.attr("src", "./boomer/boomer-atk.gif").animate({}, 1000, atk(item))
+
+                            })
+                            break;
+                        case "tank":
+                            item.animate({
+                                height: "+=300px",
+                                bottom: `-${rand(100)}px`,
+                            }, 3000, function () {
+                                item.attr("src", (rand(10) > 5) ? "./tank/tank-atk.gif" : "./tank/tank-atk2.gif").animate({}, 1000, atk(item))
+                            })
+                            break;
+                        case "witch":
+                            console.log("witch no move");
+                            break;
+                        case "chager":
+                            item.animate({
+                                height: `+=300px`,
+                                bottom: `-${rand(100)}px`,
+                                left: `${(1440 * now) + rand(1000)}px`,
+                            }, 3000, function () {
+                                item.attr("src", "./chager/chager-atk.gif").animate({}, 1000, atk(item))
+                            })
+                            break;
+                        case "smoke":
+                            setTimeout(() => {
+                                item.attr("src", "./smoke/smoke-atk.gif").animate({}, 1000, atk(item))
+                            }, 1000);
+                            break;
+                        case "life":
+                            item.animate({
+                                bottom: `+=50px`,
+                            }, 500).animate({
+                                bottom: `-=50px`,
+                            }, 500, function () {
+                                moveItem(item);
+                            })
+                            break;
+                    }
+
+                })
+
+            }
+
+            //怪物攻擊
+            const atk = (enemy) => {
+                console.log(getItemName(enemy) + " atk you");
                 switch (getItemName(enemy)) {
-                    case "fat":
-                        enemy.animate({
-                            bottom: `-${rand(100)}px`,
-                            left: `${(1440 * now) + rand(1000)}px`,
-                            height: `+=300px`
-                        }, 3000, function () {
-                            atk();
-                        })
+                    case "boomer":
+                        life--;
                         break;
                     case "tank":
-                        enemy.animate({
-                            height: "+=100px"
-                        }, 5000, function () {
-                            atk();
-                        })
+                        life -= 3;
                         break;
                     case "witch":
 
                         break;
-                    case "joker":
-                        enemy.animate({
-                            bottom: `-${rand(100)}px`,
-                            left: `${(1440 * now) + rand(1000)}px`,
-                            height: `+=200px`
-                        }, 3000, function () {
-                            atk();
-                        })
+                    case "chager":
+                        life -= 2;
                         break;
-                    case "hunter":
+                    case "smoke":
+                        life--;
                         break;
                 }
-            }
 
-            const atk = () => {
-                life--;
+
                 $("#text-life").text(life);
-
-                $(`#panel`).append(`<div style=" backgroun:#f00; width:1440px height:900px;"></div>`);
 
             }
 
@@ -330,16 +405,41 @@
                 if (isEnemy($(this))) {
                     $(this).attr("src", "./blood.png")
                     $(this).stop();
-                    score++;
-                    $("#text-score").text(score);
+                    $(this).css({
+                        height: `100px`,
+                        width: `200px`
+                    })
+                    $(this).fadeOut("slow");
+                    // score++;
+                    switch (getItemName($(this))) {
+                        case "boomer":
+                            score += 2;
+                            break;
+                        case "tank":
+                            score += 10;
+                            break;
+                        case "witch":
 
+                            break;
+                        case "chager":
+                            score += 5;
+                            break;
+                        case "smoke":
+                            score += 3;
+                            break;
+                    }
+                    $("#text-score").text(score);
                 }
                 else {
                     $(this).remove();
                     $(this).stop();
                     life++;
                     $("#text-life").text(life);
+
                 }
+
+                console.log("click " + getItemName($(this)));
+
 
 
                 $(this).css("pointer-events", "none");
