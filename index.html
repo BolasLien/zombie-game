@@ -72,6 +72,7 @@
             <input type="button" value="遊戲開始" id="start-btn">
             <input type="button" value="結束遊戲" id="over-btn">
             <input type="button" value="回首頁" id="home-btn">
+            <input type="button" value="跳下一關" id="next-btn">
             <span>分數：<span id="text-score">0</span></span>
             <span>剩餘時間：<span id="text-time">10</span>秒</span>
             <span>生命值：<span id="text-life">10</span></span>
@@ -147,10 +148,10 @@
                 // [boomer, smoke, chager, witch, tank,life]
                 switch (num) {
                     case 1:
-                        randItem = [0, 100, 100, 100, 0, 10];
+                        randItem = [0, 100, 100, 100, 0, 20];
                         break;
                     case 2:
-                        randItem = [100, 0, 100, 0, 0, 10];
+                        randItem = [100, 0, 100, 0, 0, 20];
                         break;
                     case 3:
                         randItem = [0, 0, 0, 0, 100, 20];
@@ -164,6 +165,11 @@
             $("#home-btn").click(function () {
                 gameOver();
                 sceneChange(0)
+            })
+            $("#next-btn").click(function () {
+                level++;
+                timeleft = 30;
+                levelChange(level);
             })
 
             //遊戲開始按鈕
@@ -294,8 +300,8 @@
 
             //設定東西的位置
             const setItemPosition = (item) => {
-                console.log("Set " + getItemName(item) + " Position");
                 item.fadeTo(10, 0, function () {
+                    console.log("Set " + getItemName(item) + " Position");
                     switch (getItemName(item)) {
                         case "boomer":
                             item.css({
@@ -306,8 +312,8 @@
                         case "tank":
                             item.css({
                                 height: `+=50px`,
-                                bottom: `${rand(200)}px`,
-                                left: `${(1440 * now) + rand(1000)}px`
+                                bottom: `${250 + rand(100)}px`,
+                                left: `${(1440 * now) + 200 + rand(600)}px`
                             })
                             break;
                         case "witch":
@@ -319,8 +325,8 @@
                         case "chager":
                             item.css({
                                 height: `+=50px`,
-                                bottom: `${rand(200)}px`,
-                                left: `${(1440 * now) + 1000 + rand(200)}px`
+                                bottom: `${100 + rand(100)}px`,
+                                left: `${(1440 * now) + 800 + rand(400)}px`
                             })
                             break;
                         case "smoke":
@@ -354,7 +360,7 @@
                                 bottom: `-${rand(100)}px`,
                                 left: `${(1440 * now) + rand(1000)}px`,
                                 height: `+=300px`
-                            }, 3000, function () {
+                            }, 2000, function () {
                                 item.attr("src", "./boomer/boomer-atk.gif").animate({}, 1000, atk(item))
 
                             })
@@ -363,7 +369,7 @@
                             item.animate({
                                 height: "+=300px",
                                 bottom: `-${rand(100)}px`,
-                            }, 3000, function () {
+                            }, 2000, function () {
                                 item.attr("src", (rand(10) > 5) ? "./tank/tank-atk.gif" : "./tank/tank-atk2.gif").animate({}, 1000, atk(item))
                             })
                             break;
@@ -374,8 +380,8 @@
                             item.animate({
                                 height: `+=300px`,
                                 bottom: `-${rand(100)}px`,
-                                left: `${(1440 * now) + rand(1000)}px`,
-                            }, 3000, function () {
+                                left: `${(1440 * now) + 400 + rand(600)}px`,
+                            }, 2000, function () {
                                 item.attr("src", "./chager/chager-atk.gif").animate({}, 1000, atk(item))
                             })
                             break;
