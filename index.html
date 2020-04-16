@@ -360,7 +360,7 @@
                                 bottom: `-${rand(100)}px`,
                                 left: `${(1440 * now) + rand(1000)}px`,
                                 height: `+=300px`
-                            }, 2000, function () {
+                            }, 1500, function () {
                                 item.attr("src", "./boomer/boomer-atk.gif").animate({}, 1000, atk(item))
 
                             })
@@ -369,7 +369,7 @@
                             item.animate({
                                 height: "+=300px",
                                 bottom: `-${rand(100)}px`,
-                            }, 2000, function () {
+                            }, 1500, function () {
                                 item.attr("src", (rand(10) > 5) ? "./tank/tank-atk.gif" : "./tank/tank-atk2.gif").animate({}, 1000, atk(item))
                             })
                             break;
@@ -381,7 +381,7 @@
                                 height: `+=300px`,
                                 bottom: `-${rand(100)}px`,
                                 left: `${(1440 * now) + 400 + rand(600)}px`,
-                            }, 2000, function () {
+                            }, 1500, function () {
                                 item.attr("src", "./chager/chager-atk.gif").animate({}, 1000, atk(item))
                             })
                             break;
