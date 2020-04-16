@@ -71,6 +71,7 @@
         <div id="controller">
             <input type="button" value="遊戲開始" id="start-btn">
             <input type="button" value="結束遊戲" id="over-btn">
+            <input type="button" value="回首頁" id="home-btn">
             <span>分數：<span id="text-score">0</span></span>
             <span>剩餘時間：<span id="text-time">10</span>秒</span>
             <span>生命值：<span id="text-life">10</span></span>
@@ -130,13 +131,14 @@
                 $("#game img").stop();
                 $("#game img").remove();
                 itemid = 0;
-                sceneChange(0)
+                sceneChange(4)
 
                 level = 0;
             }
 
             //換關卡
             const levelChange = (num) => {
+                sceneChange(num);
                 switch (num) {
                     case 1:
                         console.log("level 1");
@@ -153,10 +155,15 @@
             $("#over-btn").click(function () {
                 gameOver();
             })
+            $("#home-btn").click(function () {
+                gameOver();
+                sceneChange(0)
+            })
 
             //遊戲開始按鈕
             $("#start-btn").click(function () {
-                sceneChange(1)
+                level = 1;
+                levelChange(1)
 
                 // 停用開始按鈕
                 $(this).attr("disabled", true);
@@ -174,10 +181,21 @@
                     // 倒數
                     timeleft--;
                     $("#text-time").text(timeleft);
-
-                    if (timeleft == 0 || life <= 0) {
-                        console.log((timeleft == 0) ? "時間到" : "你已經死了");
+                    if (life <= 0) {
                         gameOver();
+                        console.log("你死了");
+                    }
+                    else if (timeleft == 0) {
+                        if (level > 0 && level < 3) {
+                            level++;
+                            timeleft = 30;
+                            levelChange(level);
+                        }
+                        else {
+                            gameOver();
+                        }
+                        console.log("時間到 現在關卡=" + level);
+
                     }
                     else {
                         for (let i = 0; i < 5; i++) {
