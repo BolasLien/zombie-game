@@ -102,6 +102,8 @@
             let life = 10;
             // 現在關卡
             let level = 0;
+            // 生東西機率 [boomer, smoke, chager, witch, tank,life]
+            let randItem = [0, 30, 20, 40, 0];
 
             // 畫面大小
             let now = 0;
@@ -132,22 +134,26 @@
                 $("#game img").remove();
                 itemid = 0;
                 sceneChange(4)
-
                 level = 0;
             }
 
             //換關卡
             const levelChange = (num) => {
                 sceneChange(num);
+                // 清場
+                $("#game img").stop();
+                $("#game img").remove();
+                itemid = 0;
+                // [boomer, smoke, chager, witch, tank,life]
                 switch (num) {
                     case 1:
-                        console.log("level 1");
+                        randItem = [0, 100, 100, 100, 0, 10];
                         break;
                     case 2:
-                        console.log("level 2");
+                        randItem = [100, 0, 100, 0, 0, 10];
                         break;
                     case 3:
-                        console.log("level 3");
+                        randItem = [0, 0, 0, 0, 100, 20];
                         break;
                 }
             }
@@ -181,83 +187,84 @@
                     // 倒數
                     timeleft--;
                     $("#text-time").text(timeleft);
+
+
                     if (life <= 0) {
+                        // 如果玩家死掉了，就結束遊戲
                         gameOver();
                         console.log("你死了");
                     }
                     else if (timeleft == 0) {
+                        // 如果時間到了，判斷還有沒有下一關，否則結束遊戲
                         if (level > 0 && level < 3) {
+                            // 如果還有下一關
                             level++;
                             timeleft = 30;
                             levelChange(level);
                         }
                         else {
+                            // 否則結束遊戲
                             gameOver();
                         }
                         console.log("時間到 現在關卡=" + level);
 
                     }
                     else {
-                        for (let i = 0; i < 5; i++) {
-                            if (rand(100) > 80)
-                                createItem();
+                        // 10次隨機裡面，如果符合機率就產生東西
+                        for (let i = 0; i < 10; i++) {
+                            let r = rand(100);
+                            let e = rand(5);
+                            if (r < (level * 10) && r < randItem[e]) {
+                                console.log("e= " + e);
+                                createItem(e);
+
+                            }
                         }
                     }
-
-
-
-
                 }, 1000);
 
 
             })
 
             //創建一個東西
-            const createItem = () => {
-                const r = rand(100);
-                let src = "";
-                let name = "";
+            const createItem = (num) => {
+                let r = rand(100);
+                src = "";
+                name = "";
 
-
-                if (r > 10 && r <= 30) {
-                    //boomer
-                    src = "./boomer/boomer.gif"
-                    name = "boomer";
-                }
-                else if (r > 31 && r <= 40) {
-                    //smoke
-                    src = "./smoke/smoke.gif"
-                    name = "smoke";
-
-                }
-                else if (r > 41 && r <= 70) {
-                    //chager
-                    src = "./chager/chager.gif"
-                    name = "chager";
-
-                }
-                else if (r > 71 && r <= 80) { //累了，witch先不寫
-                    //witch
-                    // src = "./witch.gif"
-                    // name = "witch";
-                    src = "./chager/chager.gif"
-                    name = "chager";
-
-                }
-                else if (r > 81 && r <= 90) {
-                    //tank
-                    src = (rand(10) > 5) ? "./tank/tank.gif" : "./tank/tank-run.gif";
-                    name = "tank";
-
-                }
-                else {
-                    //other
-                    src = "./life.png"
-                    name = "life";
+                switch (num) {
+                    case 0:
+                        src = "./boomer/boomer.gif"
+                        name = "boomer";
+                        break;
+                    case 1:
+                        src = "./smoke/smoke.gif"
+                        name = "smoke";
+                        break;
+                    case 2:
+                        src = "./chager/chager.gif"
+                        name = "chager";
+                        break;
+                    case 3:
+                        // src = "./witch.gif"
+                        // name = "witch";
+                        src = "./chager/chager.gif"
+                        name = "chager";
+                        break;
+                    case 4:
+                        src = (rand(10) > 5) ? "./tank/tank.gif" : "./tank/tank-run.gif";
+                        name = "tank";
+                        break;
+                    case 5:
+                        src = "./life.png"
+                        name = "life";
+                        break;
                 }
 
-                src = "./boomer/boomer.gif"
-                name = "boomer";
+                // 測試
+                // src = "./boomer/boomer.gif"
+                // name = "boomer";
+
                 $(`#panel`).append(`<img src=${src} id=item${itemid} class=${name}>`);
 
                 setItemPosition($(`#item${itemid}`));
@@ -429,6 +436,8 @@
                     })
                     $(this).fadeOut("slow");
                     // score++;
+
+                    // 點到的怪物計分
                     switch (getItemName($(this))) {
                         case "boomer":
                             score += 2;
