@@ -498,6 +498,10 @@
 
             //點擊item事件
             $("#game").on("mousedown", "img", function () {
+                if (!isPlaying) {
+                    return;
+                }
+
                 if (isEnemy($(this))) {
                     $(this).addClass("dead")
                     $(this).attr("src", "./blood.png")
