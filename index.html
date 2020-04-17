@@ -432,7 +432,7 @@
             //怪物攻擊
             const atk = (enemy) => {
 
-                if (isPlaying) {
+                if (isPlaying && !enemy.hasClass("dead")) {
                     console.log("atk");
                     $("#hurt").fadeTo(200, 0.3).fadeTo(200, 0, function () {
                         console.log(getItemName(enemy) + " atk you");
@@ -464,8 +464,9 @@
             }
 
             //點擊item事件
-            $("#game").on("click", "img", function () {
+            $("#game").on("mousedown", "img", function () {
                 if (isEnemy($(this))) {
+                    $(this).addClass("dead")
                     $(this).attr("src", "./blood.png")
                     $(this).stop();
                     $(this).css({
