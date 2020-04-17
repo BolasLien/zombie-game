@@ -63,6 +63,20 @@
             width: 1440px;
             background: #fff;
         }
+
+        #ui-panel {
+            margin: auto;
+            height: 900px;
+            width: 1440px;
+            position: absolute;
+
+        }
+
+        #ui-panel #hurt {
+            height: 900px;
+            background: red;
+            opacity: 0;
+        }
     </style>
 </head>
 
@@ -84,6 +98,9 @@
             <div class="scene" id="scene4"></div>
             <div class="scene" id="scene5"></div>
         </div>
+        <div id="ui-panel">
+            <div id="hurt"></div>
+        </div>
     </div>
 
 
@@ -91,6 +108,8 @@
     <script>
         $(function () {
 
+            // 是否在遊戲中
+            let isPlaying = false;
             // 分數
             let score = 0;
             // 剩餘時間
@@ -136,6 +155,7 @@
                 itemid = 0;
                 sceneChange(4)
                 level = 0;
+                isPlaying = false;
             }
 
             //換關卡
@@ -172,8 +192,12 @@
                 levelChange(level);
             })
 
+
+
             //遊戲開始按鈕
             $("#start-btn").click(function () {
+                isPlaying = true;
+
                 level = 1;
                 levelChange(1)
 
@@ -407,27 +431,35 @@
 
             //怪物攻擊
             const atk = (enemy) => {
-                console.log(getItemName(enemy) + " atk you");
-                switch (getItemName(enemy)) {
-                    case "boomer":
-                        life--;
-                        break;
-                    case "tank":
-                        life -= 3;
-                        break;
-                    case "witch":
 
-                        break;
-                    case "chager":
-                        life -= 2;
-                        break;
-                    case "smoke":
-                        life--;
-                        break;
+                if (isPlaying) {
+                    console.log("atk");
+                    $("#hurt").fadeTo(200, 0.3).fadeTo(200, 0, function () {
+                        console.log(getItemName(enemy) + " atk you");
+                        switch (getItemName(enemy)) {
+                            case "boomer":
+                                life--;
+                                break;
+                            case "tank":
+                                life -= 3;
+                                break;
+                            case "witch":
+
+                                break;
+                            case "chager":
+                                life -= 2;
+                                break;
+                            case "smoke":
+                                life--;
+                                break;
+                        }
+                        $("#text-life").text(life);
+
+                        // atk(enemy);
+                    })
+
                 }
 
-
-                $("#text-life").text(life);
 
             }
 
