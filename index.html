@@ -88,7 +88,16 @@
             background-position: center center;
             opacity: 0;
             position: absolute;
+        }
 
+        #ui-panel #loading {
+            height: 900px;
+            width: 1440px;
+            background: url(./ui/loading.jpg);
+            background-repeat: no-repeat;
+            background-position: center center;
+            opacity: 0;
+            position: absolute;
         }
     </style>
 </head>
@@ -119,7 +128,7 @@
             </div>
             <div id="hurt"></div>
             <div id="dead"></div>
-            <div id="finish"></div>
+            <div id="loading"></div>
             <div id="game-result"></div>
         </div>
     </div>
@@ -181,23 +190,36 @@
 
             //換關卡
             const levelChange = (num) => {
-                sceneChange(num);
-                // 清場
-                $("#game img").stop();
-                $("#game img").remove();
+                if (level > 0 && level <= 3) {
+                    timeleft = 30;
+                    sceneChange(num);
 
-                itemid = 0;
-                // [boomer, smoke, chager, witch, tank,life]
-                switch (num) {
-                    case 1:
-                        randItem = [0, 100, 100, 100, 0, 20];
-                        break;
-                    case 2:
-                        randItem = [100, 0, 100, 0, 0, 20];
-                        break;
-                    case 3:
-                        randItem = [0, 0, 0, 0, 100, 20];
-                        break;
+                    $("#loading").fadeTo(100, 1, function () {
+                        setTimeout(() => {
+                            $(this).fadeTo(1000, 0);
+
+                            // 清場
+                            $("#game img").stop();
+                            $("#game img").remove();
+
+                            itemid = 0;
+                            // [boomer, smoke, chager, witch, tank,life]
+                            switch (num) {
+                                case 1:
+                                    randItem = [0, 100, 100, 100, 0, 20];
+                                    break;
+                                case 2:
+                                    randItem = [100, 0, 100, 0, 0, 20];
+                                    break;
+                                case 3:
+                                    randItem = [0, 0, 0, 0, 100, 20];
+                                    break;
+                            }
+                        }, 1000);
+                    })
+                }
+                else {
+                    gameOver();
                 }
             }
 
@@ -231,7 +253,7 @@
                 isPlaying = true;
 
                 level = 1;
-                levelChange(1)
+                levelChange(level)
 
                 // 停用開始按鈕
                 $(this).attr("disabled", true);
@@ -257,17 +279,19 @@
                         console.log("你死了");
                     }
                     else if (timeleft == 0) {
-                        // 如果時間到了，判斷還有沒有下一關，否則結束遊戲
-                        if (level > 0 && level < 3) {
-                            // 如果還有下一關
-                            level++;
-                            timeleft = 30;
-                            levelChange(level);
-                        }
-                        else {
-                            // 否則結束遊戲
-                            gameOver();
-                        }
+                        // // 如果時間到了，判斷還有沒有下一關，否則結束遊戲
+                        // if (level > 0 && level < 3) {
+                        //     // 如果還有下一關
+                        //     level++;
+                        //     timeleft = 30;
+                        //     levelChange(level);
+                        // }
+                        // else {
+                        //     // 否則結束遊戲
+                        //     gameOver();
+                        // }
+                        level++;
+                        levelChange(level);
                         console.log("時間到 現在關卡=" + level);
 
                     }
