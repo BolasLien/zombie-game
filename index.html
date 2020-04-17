@@ -74,8 +74,21 @@
 
         #ui-panel #hurt {
             height: 900px;
+            width: 1440px;
             background: red;
             opacity: 0;
+            position: absolute;
+        }
+
+        #ui-panel #dead {
+            height: 900px;
+            width: 1440px;
+            background: url(./ui/you_are_dead.png);
+            background-repeat: no-repeat;
+            background-position: center center;
+            opacity: 0;
+            position: absolute;
+
         }
     </style>
 </head>
@@ -100,6 +113,9 @@
         </div>
         <div id="ui-panel">
             <div id="hurt"></div>
+            <div id="dead"></div>
+            <div id="finish"></div>
+            <div id="game-result"></div>
         </div>
     </div>
 
@@ -164,6 +180,7 @@
                 // 清場
                 $("#game img").stop();
                 $("#game img").remove();
+
                 itemid = 0;
                 // [boomer, smoke, chager, witch, tank,life]
                 switch (num) {
@@ -177,6 +194,16 @@
                         randItem = [0, 0, 0, 0, 100, 20];
                         break;
                 }
+            }
+
+            //玩家死掉了
+            const playerDead = () => {
+                $("#dead").fadeTo(10, 1, function () {
+                    setTimeout(() => {
+                        gameOver();
+                        $(this).fadeTo(1000, 0);
+                    }, 1000);
+                })
             }
 
             $("#over-btn").click(function () {
@@ -221,7 +248,7 @@
 
                     if (life <= 0) {
                         // 如果玩家死掉了，就結束遊戲
-                        gameOver();
+                        playerDead();
                         console.log("你死了");
                     }
                     else if (timeleft == 0) {
