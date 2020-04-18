@@ -1,11 +1,9 @@
 # 打殭屍作業
 ## 待辦
 怪物打第二下的功能<br>
-結算介面<br>
 遊玩介面<br>
 怪物路徑<br>
 看能不能改變怪物的邏輯結構<br>
-
 
 ## 日誌
 ### 0414
@@ -34,3 +32,11 @@
 新增怪物死亡的判斷，以防怪物死掉了還會打玩家<br>
 新增是否在遊玩中的判斷<br>
 UI規劃<br>
+
+### 0418
+停用反白功能<br>
+調整controller的Html<br>
+loading<br>
+timeout<br>
+player dead<br>
+game result<br>
