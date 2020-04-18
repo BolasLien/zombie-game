@@ -70,7 +70,6 @@
         #game img {
             position: absolute;
             height: 150px;
-
         }
 
         #controller {
@@ -90,33 +89,28 @@
             pointer-events: none;
         }
 
-        #ui-panel #hurt {
+        #hurt,
+        #dead,
+        #loading,
+        #time-out {
             height: 900px;
             width: 1440px;
-            background: red;
             opacity: 0;
             position: absolute;
+            background-repeat: no-repeat;
+            background-position: center center;
+        }
+
+        #ui-panel #hurt {
+            background-color: red;
         }
 
         #ui-panel #dead {
-            height: 900px;
-            width: 1440px;
-            background: url(./ui/you_are_dead.png);
-            background-repeat: no-repeat;
-            background-position: center center;
-            opacity: 0;
-            position: absolute;
+            background-image: url(./ui/you_are_dead.png);
         }
 
         #ui-panel #loading {
-            height: 900px;
-            width: 1440px;
-            background: url(./ui/loading.jpg);
-            background-repeat: no-repeat;
-            background-position: center center;
-            position: absolute;
-            opacity: 0;
-
+            background-image: url(./ui/loading.jpg);
         }
 
         #ui-panel #loading #progress {
@@ -155,6 +149,7 @@
             </div>
             <div id="hurt"></div>
             <div id="dead"></div>
+            <div id="time-out"></div>
             <div id="loading">
                 <progress id="progress" value="0" max="100"></progress>
             </div>
@@ -236,9 +231,10 @@
                     $("#game img").stop();
                     $("#game img").remove();
                     $("#loading").fadeTo(100, 1, function () {
-
-                        //讀取條增加
+                        // loading秒數
                         let tl = 2000;
+
+                        // 讀取條
                         let i = 0;
                         let timer = setInterval(() => {
                             $("#progress").val(i * tl / 160)
@@ -349,9 +345,7 @@
                             let r = rand(100);
                             let e = rand(5);
                             if (r < (level * 10) && r < randItem[e]) {
-                                console.log("e= " + e);
                                 createItem(e);
-
                             }
                         }
                     }
