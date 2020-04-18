@@ -278,15 +278,7 @@
                 }
             }
 
-            //玩家死掉了
-            const playerDead = () => {
-                $("#dead").fadeTo(10, 1, function () {
-                    setTimeout(() => {
-                        gameOver();
-                        $(this).fadeTo(1000, 0);
-                    }, 1000);
-                })
-            }
+
 
             $("#over-btn").click(function () {
                 gameOver();
@@ -332,7 +324,16 @@
 
                     if (life <= 0) {
                         // 如果玩家死掉了，就結束遊戲
-                        playerDead();
+                        $("#dead").fadeTo(100, 1, function () {
+                            $("#panel").addClass("blur")
+                            setTimeout(() => {
+                                gameOver();
+
+                                $("#panel").removeClass("blur")
+                                $(this).fadeTo(300, 0);
+                            }, 1000);
+                        })
+
                         console.log("你死了");
                     }
                     else if (timeleft == 0) {
