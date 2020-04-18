@@ -113,11 +113,30 @@
             background-image: url(./ui/loading.jpg);
         }
 
+
         #ui-panel #loading #progress {
             position: absolute;
             width: 220px;
             height: 20px;
             transform: translate(890px, 640px);
+        }
+
+        #ui-panel #time-out {
+            background-image: url(./ui/loading.jpg);
+        }
+
+        #ui-panel #time-out #next-level-btn {
+            position: absolute;
+            width: 68px;
+            height: 68px;
+            transform: translate(1000px, 590px);
+            pointer-events: all;
+            background-image: url(./ui/next-level-btn.png);
+        }
+
+        #ui-panel #time-out #next-level-btn:hover {
+            filter: hue-rotate(240deg);
+            cursor: pointer;
         }
     </style>
 </head>
@@ -142,14 +161,16 @@
                 <span>剩餘時間：<span id="text-time">10</span>秒</span>
                 <span>生命值：<span id="text-life">10</span></span>
             </div>
-            <div id="game-info">
+            <div id="HUD">
                 <div id="game-time"></div>
                 <div id="game-score"></div>
                 <div id="game-life"></div>
             </div>
             <div id="hurt"></div>
             <div id="dead"></div>
-            <div id="time-out"></div>
+            <div id="time-out">
+                <div id="next-level-btn"></div>
+            </div>
             <div id="loading">
                 <progress id="progress" value="0" max="100"></progress>
             </div>
@@ -288,6 +309,16 @@
                 levelChange(level);
             })
 
+            $("#next-level-btn").click(function () {
+                $("#time-out").fadeTo(300, 0, function () {
+                    $("#panel").removeClass("blur")
+                    level++;
+                    levelChange(level);
+                })
+                $("#next-level-btn").css("pointer-events", "none")
+                $("#panel").css("pointer-events", "all")
+                isPlaying = true;
+            })
 
             //遊戲開始按鈕
             $("#start-btn").click(function () {
@@ -333,9 +364,13 @@
                         console.log("你死了");
                     }
                     else if (timeleft == 0) {
+                        isLoading = true;
+                        isPlaying = false;
                         // 時間到換關卡
-                        level++;
-                        levelChange(level);
+                        $("#panel").addClass("blur")
+                        $("#time-out").fadeTo(100, 1)
+                        $("#next-level-btn").css("pointer-events", "all")
+                        $("#panel").css("pointer-events", "none")
 
                         console.log("時間到");
                     }
