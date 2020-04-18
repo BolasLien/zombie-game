@@ -92,7 +92,8 @@
         #hurt,
         #dead,
         #loading,
-        #time-out {
+        #time-out,
+        #game-result {
             height: 900px;
             width: 1440px;
             opacity: 0;
@@ -113,7 +114,6 @@
             background-image: url(./ui/loading.jpg);
         }
 
-
         #ui-panel #loading #progress {
             position: absolute;
             width: 220px;
@@ -122,14 +122,15 @@
         }
 
         #ui-panel #time-out {
-            background-image: url(./ui/loading.jpg);
+            background-image: url(./ui/time-out.png);
         }
 
         #ui-panel #time-out #next-level-btn {
             position: absolute;
-            width: 68px;
-            height: 68px;
-            transform: translate(1000px, 590px);
+            width: 164px;
+            height: 53px;
+            left: 640px;
+            top: 470px;
             pointer-events: all;
             background-image: url(./ui/next-level-btn.png);
         }
@@ -137,6 +138,65 @@
         #ui-panel #time-out #next-level-btn:hover {
             filter: hue-rotate(240deg);
             cursor: pointer;
+        }
+
+        #ui-panel #game-result #title {
+            position: absolute;
+            width: 373px;
+            height: 53px;
+            left: 520px;
+            top: 50px;
+            background-image: url(./ui/Game-Result.png);
+        }
+
+        #ui-panel #game-result #home {
+            position: absolute;
+            width: 164px;
+            height: 53px;
+            left: 640px;
+            top: 800px;
+            pointer-events: all;
+            background-image: url(./ui/home-btn.png);
+        }
+
+        #ui-panel #game-result #home:hover {
+            filter: hue-rotate(240deg);
+            cursor: pointer;
+        }
+
+        #ui-panel #game-result {
+
+            background-image: url(./ui/result-frame.png);
+        }
+
+        #board {
+            width: 1046px;
+            height: 574px;
+            position: absolute;
+            left: 197px;
+            top: 163px;
+        }
+
+        #charts {
+            top: 37px;
+            width: 480px;
+            height: 500px;
+            position: relative;
+            float: left;
+            left: 40px;
+        }
+
+        #record {
+            top: 37px;
+            width: 480px;
+            height: 500px;
+            position: relative;
+            float: left;
+            left: 50px;
+            font-size: 50px;
+            color: #999;
+            text-shadow: 2px 2px 5px #000000;
+            line-height: 3;
         }
     </style>
 </head>
@@ -157,7 +217,7 @@
                 <input type="button" value="結束遊戲" id="over-btn">
                 <input type="button" value="回首頁" id="home-btn">
                 <input type="button" value="跳下一關" id="next-btn">
-                <span>分數：<span id="text-score">0</span></span>
+                <span>殺敵得分：<span id="text-score">0</span></span>
                 <span>剩餘時間：<span id="text-time">10</span>秒</span>
                 <span>生命值：<span id="text-life">10</span></span>
             </div>
@@ -174,7 +234,18 @@
             <div id="loading">
                 <progress id="progress" value="0" max="100"></progress>
             </div>
-            <div id="game-result"></div>
+            <div id="game-result">
+                <div id="title"></div>
+                <div id="board">
+                    <div id="charts"></div>
+                    <div id="record">
+                        <div id="score">殺敵得分：<span id="record-score">0</span></div>
+                        <div id="life">生命值：<span id="record-life">10</span></div>
+                        <div id="total-score">總成績：<span id="record-total-score">0</span></div>
+                    </div>
+                </div>
+                <div id="home"></div>
+            </div>
         </div>
     </div>
 
@@ -222,6 +293,20 @@
 
             //遊戲結束
             const gameOver = () => {
+                setTimeout(() => {
+                    $("#game-result").fadeTo(500, 1);
+                    $("#home").css("pointer-events", "all")
+                }, 1000);
+
+                let timer = setInterval(() => {
+                    $("#record-total-score").text(rand(300))
+
+                }, 50);
+                setTimeout(() => {
+                    clearInterval(timer);
+                    $("#record-total-score").text(score)
+                }, 3000);
+
                 clearInterval(gametimer);
                 // 啟用開始按鈕
                 $("#start-btn").attr("disabled", false);
@@ -295,7 +380,11 @@
                 }
             }
 
-
+            $("#home").click(function () {
+                $("#game-result").fadeTo(200, 0);
+                sceneChange(0)
+                $("#home").css("pointer-events", "none")
+            })
 
             $("#over-btn").click(function () {
                 gameOver();
