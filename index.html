@@ -69,6 +69,8 @@
             height: 40px;
             width: 1440px;
             background: #fff;
+            position: absolute;
+            pointer-events: all;
         }
 
         #ui-panel {
@@ -111,15 +113,7 @@
 
 <body>
     <div id="game">
-        <div id="controller">
-            <input type="button" value="遊戲開始" id="start-btn">
-            <input type="button" value="結束遊戲" id="over-btn">
-            <input type="button" value="回首頁" id="home-btn">
-            <input type="button" value="跳下一關" id="next-btn">
-            <span>分數：<span id="text-score">0</span></span>
-            <span>剩餘時間：<span id="text-time">10</span>秒</span>
-            <span>生命值：<span id="text-life">10</span></span>
-        </div>
+
         <div id="panel">
             <div class="scene" id="scene1"></div>
             <div class="scene" id="scene2"></div>
@@ -128,6 +122,15 @@
             <div class="scene" id="scene5"></div>
         </div>
         <div id="ui-panel">
+            <div id="controller">
+                <input type="button" value="遊戲開始" id="start-btn">
+                <input type="button" value="結束遊戲" id="over-btn">
+                <input type="button" value="回首頁" id="home-btn">
+                <input type="button" value="跳下一關" id="next-btn">
+                <span>分數：<span id="text-score">0</span></span>
+                <span>剩餘時間：<span id="text-time">10</span>秒</span>
+                <span>生命值：<span id="text-life">10</span></span>
+            </div>
             <div id="game-info">
                 <div id="game-time"></div>
                 <div id="game-score"></div>
