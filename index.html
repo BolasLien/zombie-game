@@ -34,6 +34,14 @@
             float: left;
         }
 
+        .blur {
+            filter: blur(4px);
+            -o-filter: blur(4px);
+            -ms-filter: blur(4px);
+            -moz-filter: blur(4px);
+            -webkit-filter: blur(4px);
+        }
+
         #scene1 {
             background: url(./scene/00.jpg);
         }
@@ -106,8 +114,16 @@
             background: url(./ui/loading.jpg);
             background-repeat: no-repeat;
             background-position: center center;
-            opacity: 0;
             position: absolute;
+            opacity: 0;
+
+        }
+
+        #ui-panel #loading #progress {
+            position: absolute;
+            width: 220px;
+            height: 20px;
+            transform: translate(890px, 640px);
         }
     </style>
 </head>
@@ -139,7 +155,9 @@
             </div>
             <div id="hurt"></div>
             <div id="dead"></div>
-            <div id="loading"></div>
+            <div id="loading">
+                <progress id="progress" value="0" max="100"></progress>
+            </div>
             <div id="game-result"></div>
         </div>
     </div>
@@ -151,6 +169,8 @@
 
             // 是否在遊戲中
             let isPlaying = false;
+            // 遊戲讀取中
+            let isLoading = false;
             // 分數
             let score = 0;
             // 剩餘時間
@@ -202,18 +222,38 @@
             //換關卡
             const levelChange = (num) => {
                 if (level > 0 && level <= 3) {
-                    timeleft = 30;
-                    sceneChange(num);
+                    // 如果還有下一關
 
+                    console.log("換關卡中");
+                    isLoading = true;
+
+                    //讀取條歸零
+                    $("#progress").val(0)
+                    //背景模糊
+                    $("#panel").addClass("blur");
+
+                    // 清場
+                    $("#game img").stop();
+                    $("#game img").remove();
                     $("#loading").fadeTo(100, 1, function () {
+
+                        //讀取條增加
+                        let tl = 2000;
+                        let i = 0;
+                        let timer = setInterval(() => {
+                            $("#progress").val(i * tl / 160)
+                            i++;
+                        }, tl / 10);
+
                         setTimeout(() => {
-                            $(this).fadeTo(1000, 0);
+                            $("#panel").removeClass("blur");
 
-                            // 清場
-                            $("#game img").stop();
-                            $("#game img").remove();
-
+                            clearInterval(timer);
+                            timeleft = 30;
+                            sceneChange(num);
+                            $(this).fadeTo(300, 0);
                             itemid = 0;
+
                             // [boomer, smoke, chager, witch, tank,life]
                             switch (num) {
                                 case 1:
@@ -226,10 +266,14 @@
                                     randItem = [0, 0, 0, 0, 100, 20];
                                     break;
                             }
-                        }, 1000);
+
+                            isLoading = false;
+
+                        }, tl);
                     })
                 }
                 else {
+                    // 遊戲結束
                     gameOver();
                 }
             }
@@ -253,10 +297,8 @@
             })
             $("#next-btn").click(function () {
                 level++;
-                timeleft = 30;
                 levelChange(level);
             })
-
 
 
             //遊戲開始按鈕
@@ -279,6 +321,10 @@
 
                 // 遊戲倒數
                 gametimer = setInterval(() => {
+
+                    if (isLoading) {
+                        return;
+                    }
                     // 倒數
                     timeleft--;
                     $("#text-time").text(timeleft);
@@ -290,21 +336,11 @@
                         console.log("你死了");
                     }
                     else if (timeleft == 0) {
-                        // // 如果時間到了，判斷還有沒有下一關，否則結束遊戲
-                        // if (level > 0 && level < 3) {
-                        //     // 如果還有下一關
-                        //     level++;
-                        //     timeleft = 30;
-                        //     levelChange(level);
-                        // }
-                        // else {
-                        //     // 否則結束遊戲
-                        //     gameOver();
-                        // }
+                        // 時間到換關卡
                         level++;
                         levelChange(level);
-                        console.log("時間到 現在關卡=" + level);
 
+                        console.log("時間到");
                     }
                     else {
                         // 10次隨機裡面，如果符合機率就產生東西
