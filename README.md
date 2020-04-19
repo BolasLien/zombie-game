@@ -1,9 +1,12 @@
 # 打殭屍作業
 ## 待辦
 怪物打第二下的功能<br>
-遊玩介面<br>
 怪物路徑<br>
 看能不能改變怪物的邏輯結構<br>
+介面：玩家血條<br>
+排行榜功能<br>
+介面流程重構<br>
+怪物邏輯重構<br>
 
 ## 日誌
 ### 0414
@@ -36,7 +39,15 @@ UI規劃<br>
 ### 0418
 停用反白功能<br>
 調整controller的Html<br>
-loading<br>
-timeout<br>
-player dead<br>
-game result<br>
+ui loading<br>
+ui timeout<br>
+ui player dead<br>
+ui game result<br>
+loading功能<br>
+時間到功能<br>
+遊戲結算功能<br>
+
+### 0419
+ui HUD<br>
+調整結算邏輯<br>
+HUD 分數、時間功能<br>
