@@ -89,6 +89,7 @@
             pointer-events: none;
         }
 
+        #HUD,
         #hurt,
         #dead,
         #loading,
@@ -101,6 +102,43 @@
             background-repeat: no-repeat;
             background-position: center center;
         }
+
+        #ui-panel #HUD #game-time {
+            background-image: url(./ui/game-time.png);
+            width: 301px;
+            height: 64px;
+            position: absolute;
+            left: 780px;
+            top: 50px;
+            font-size: 50px;
+            color: #999;
+            text-align: center;
+            line-height: 64px;
+        }
+
+        #ui-panel #HUD #game-score {
+            background-image: url(./ui/game-score.png);
+            width: 301px;
+            height: 66px;
+            position: absolute;
+            left: 400px;
+            top: 50px;
+            font-size: 50px;
+            color: #999;
+            text-align: center;
+            line-height: 66px;
+
+        }
+
+        #ui-panel #HUD #game-life {
+            background-image: url(./ui/game-life.png);
+            width: 303px;
+            height: 75px;
+            position: absolute;
+            right: 50px;
+            bottom: 50px;
+        }
+
 
         #ui-panel #hurt {
             background-color: red;
@@ -169,7 +207,7 @@
             background-image: url(./ui/result-frame.png);
         }
 
-        #board {
+        #ui-panel #game-result #board {
             width: 1046px;
             height: 574px;
             position: absolute;
@@ -177,7 +215,7 @@
             top: 163px;
         }
 
-        #charts {
+        #ui-panel #game-result #board #charts {
             top: 37px;
             width: 480px;
             height: 500px;
@@ -186,7 +224,7 @@
             left: 40px;
         }
 
-        #record {
+        #ui-panel #game-result #board #record {
             top: 37px;
             width: 480px;
             height: 500px;
@@ -273,6 +311,10 @@
             // 生東西機率 [boomer, smoke, chager, witch, tank,life]
             let randItem = [0, 30, 20, 40, 0];
 
+            $("#home").css("pointer-events", "none")
+            $("#next-level-btn").css("pointer-events", "none")
+
+
             // 畫面大小
             let now = 0;
             const sl = $(".scene").length;
@@ -293,6 +335,12 @@
 
             //遊戲結束
             const gameOver = () => {
+                $("#HUD").fadeTo(100, 0)
+
+                $("#record-score").text(score)
+                $("#record-life").text(life)
+                $("#record-total-score").text(0)
+
                 setTimeout(() => {
                     $("#game-result").fadeTo(500, 1);
                     $("#home").css("pointer-events", "all")
@@ -332,6 +380,8 @@
                     $("#progress").val(0)
                     //背景模糊
                     $("#panel").addClass("blur");
+                    // 打開HUD
+                    $("#HUD").fadeTo(500, 0);
 
                     // 清場
                     $("#game img").stop();
@@ -349,6 +399,8 @@
 
                         setTimeout(() => {
                             $("#panel").removeClass("blur");
+                            // 打開HUD
+                            $("#HUD").fadeTo(1000, 1);
 
                             clearInterval(timer);
                             timeleft = 30;
@@ -390,8 +442,11 @@
                 gameOver();
             })
             $("#home-btn").click(function () {
-                gameOver();
+                $("#game-result").fadeTo(200, 0);
+                $("#HUD").fadeTo(200, 0);
+                level = 0;
                 sceneChange(0)
+                $("#home").css("pointer-events", "none")
             })
             $("#next-btn").click(function () {
                 level++;
@@ -422,8 +477,12 @@
                 // 重設
                 score = 0;
                 $("#text-score").text(score);
+                $("#game-score").text(score);
+
                 timeleft = 30;
                 $("#text-time").text(timeleft);
+                $("#game-time").text(timeleft);
+
                 life = 10;
                 $("#text-life").text(life);
 
@@ -436,6 +495,7 @@
                     // 倒數
                     timeleft--;
                     $("#text-time").text(timeleft);
+                    $("#game-time").text(timeleft);
 
 
                     if (life <= 0) {
@@ -727,6 +787,7 @@
                             break;
                     }
                     $("#text-score").text(score);
+                    $("#game-score").text(score);
                 }
                 else {
                     $(this).remove();
