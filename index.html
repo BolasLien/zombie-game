@@ -309,8 +309,8 @@
             let life = 10;
             // 現在關卡
             let level = 0;
-            // 生東西機率 [boomer, smoke, chager, witch, tank,life]
-            let randItem = [0, 30, 20, 40, 0];
+            // 生東西機率 [boomer, smoke, chager, witch, tank, tank-run, life]
+            let randItem = [];
 
             $("#home").css("pointer-events", "none")
             $("#next-level-btn").css("pointer-events", "none")
@@ -558,6 +558,7 @@
 
                 if (item.hasClass("boomer")) { name = "boomer"; }
                 else if (item.hasClass("tank")) { name = "tank"; }
+                else if (item.hasClass("tank-run")) { name = "tank-run"; }
                 else if (item.hasClass("witch")) { name = "witch"; }
                 else if (item.hasClass("chager")) { name = "chager"; }
                 else if (item.hasClass("smoke")) { name = "smoke"; }
@@ -570,52 +571,55 @@
             const setItemPosition = (item) => {
                 item.fadeTo(10, 0, function () {
                     console.log("Set " + getItemName(item) + " Position");
-                    switch (getItemName(item)) {
-                        case "boomer":
-                            item.css({
-                                bottom: `${rand(200) + 400}px`,
-                                left: `${(1440 * now) + rand(400)}px`
-                            })
-                            break;
-                        case "tank":
-                            item.css({
-                                height: `+=50px`,
-                                bottom: `${250 + rand(100)}px`,
-                                left: `${(1440 * now) + 200 + rand(600)}px`
-                            })
-                            break;
-                        case "witch":
-                            item.css({
-                                bottom: `${rand(200)}px`,
-                                left: `${(1440 * now) + rand(1000)}px`
-                            })
-                            break;
-                        case "chager":
-                            item.css({
-                                height: `+=50px`,
-                                bottom: `${100 + rand(100)}px`,
-                                left: `${(1440 * now) + 800 + rand(400)}px`
-                            })
-                            break;
-                        case "smoke":
-                            item.css({
-                                height: `+=150px`,
-                                bottom: `${rand(100)}px`,
-                                left: `${(1440 * now) + rand(400)}px`
-                            })
-                            break;
-                        case "life":
-                            item.css({
-                                height: `100px`,
-                                bottom: `${rand(200)}px`,
-                                left: `${(1440 * now) + rand(1000)}px`
-                            })
-                            break;
+                    for (let obj of itemData) {
+                        if (getItemName(item) == obj.name) {
+                            item.css(obj.setPosition[level - 1][0])
+                        }
                     }
+
+                    // switch (getItemName(item)) {
+                    //     case "boomer":
+                    //         item.css({
+                    //             bottom: `${rand(200) + 400}px`,
+                    //             left: `${(1440 * now) + rand(400)}px`
+                    //         })
+                    //         break;
+                    //     case "tank":
+                    //         item.css({
+                    //             height: `+=50px`,
+                    //             bottom: `${250 + rand(100)}px`,
+                    //             left: `${(1440 * now) + 200 + rand(600)}px`
+                    //         })
+                    //         break;
+                    //     case "witch":
+                    //         item.css({
+                    //             bottom: `${rand(200)}px`,
+                    //             left: `${(1440 * now) + rand(1000)}px`
+                    //         })
+                    //         break;
+                    //     case "chager":
+                    //         item.css({
+                    //             height: `+=50px`,
+                    //             bottom: `${100 + rand(100)}px`,
+                    //             left: `${(1440 * now) + 800 + rand(400)}px`
+                    //         })
+                    //         break;
+                    //     case "smoke":
+                    //         item.css({
+                    //             height: `+=150px`,
+                    //             bottom: `${rand(100)}px`,
+                    //             left: `${(1440 * now) + rand(400)}px`
+                    //         })
+                    //         break;
+                    //     case "life":
+                    //         item.css({
+                    //             height: `100px`,
+                    //             bottom: `${rand(200)}px`,
+                    //             left: `${(1440 * now) + rand(1000)}px`
+                    //         })
+                    //         break;
+                    // }
                 })
-
-
-
             }
 
             // 移動東西
