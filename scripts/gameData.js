@@ -1,109 +1,202 @@
+const rand = (num) => {
+    return Math.round(Math.random() * num);
+}
+
 const itemData = [
     {
         "name": "boomer",
         "srcNormal": "./boomer/boomer.gif",
         "srcAtk": "./boomer/boomer-atk.gif",
+        "atkWait": 500,
         "atk": 1,
         "score": 2,
         "setPosition": [
             [
                 {
-                    "bottom": "400px",
-                    "left": "1640px"//`${(1440 * now) + rand(400)}px`
+                    "bottom": `${rand(200) + 400}px`,
+                    "left": `${(1440 * 1) + rand(400)}px`
                 }
             ],
             [
                 {
-                    "bottom": "400px",
-                    "left": "3080px"
+                    "bottom": `${rand(200) + 400}px`,
+                    "left": `${(1440 * 2) + rand(400)}px`
                 }
             ],
             [
                 {
-                    "bottom": "400px",
-                    "left": "1640px"
+                    "bottom": `${rand(200) + 400}px`,
+                    "left": `${(1440 * 3) + rand(400)}px`
+                }
+            ]
+        ],
+        "moveTo": [
+            [
+                {
+                    "bottom": `-${rand(100)}px`,
+                    "left": `${1440 * 1 + rand(1000)}px`,
+                    "height": `+=200px`
+                }
+            ],
+            [
+                {
+                    "bottom": `-${rand(100)}px`,
+                    "left": `${1440 * 2 + rand(1000)}px`,
+                    "height": `+=200px`
+                }
+            ],
+            [
+                {
+                    "bottom": `-${rand(100)}px`,
+                    "left": `${1440 * 3 + rand(1000)}px`,
+                    "height": `+=200px`
                 }
             ]
         ]
+
     },
 
     {
         "name": "smoke",
         "srcNormal": "./smoke/smoke.gif",
         "srcAtk": "./smoke/smoke-atk.gif",
+        "atkWait": 600,
         "atk": 1,
         "score": 3,
         "setPosition": [
             [{
-                "height": `+=150px`,
-                "bottom": `100px`,
-                "left": "1840px"
+                height: `+=150px`,
+                bottom: `${rand(100)}px`,
+                left: `${(1440 * 1) + rand(400)}px`
             }],
             [{
-                "height": `+=150px`,
-                "bottom": `100px`,
-                "left": "3280px"
+                height: `+=150px`,
+                bottom: `${rand(100)}px`,
+                left: `${(1440 * 2) + rand(400)}px`
             }],
             [{
-                "height": `+=150px`,
-                "bottom": `100px`,
-                "left": "1840px"
+                height: `+=150px`,
+                bottom: `${rand(100)}px`,
+                left: `${(1440 * 3) + rand(400)}px`
             }]
+        ],
+        "moveTo": [
+            [
+                {
+                    "height": `+=50px`
+                }
+            ],
+            [
+                {
+                    "height": `+=50px`
+                }
+            ],
+            [
+                {
+                    "height": `+=50px`
+                }
+            ]
         ]
+
+
     },
 
     {
         "name": "chager",
         "srcNormal": "./chager/chager.gif",
         "srcAtk": "./chager/chager-atk.gif",
+        "atkWait": 550,
         "atk": 2,
         "score": 5,
         "setPosition": [
             [{
-                "height": `+=50px`,
-                "bottom": `200px`,
-                "left": `2440px`
+                height: `+=50px`,
+                bottom: `${100 + rand(100)}px`,
+                left: `${(1440 * 1) + 800 + rand(400)}px`
             }],
             [{
-                "height": `+=50px`,
-                "bottom": `200px`,
-                "left": `3880px`
+                height: `+=50px`,
+                bottom: `${100 + rand(100)}px`,
+                left: `${(1440 * 2) + 800 + rand(400)}px`
             }],
             [{
-                "height": `+=150px`,
-                "bottom": `100px`,
-                "left": "1840px"
+                height: `+=50px`,
+                bottom: `${100 + rand(100)}px`,
+                left: `${(1440 * 3) + 800 + rand(400)}px`
             }]
+        ],
+        "moveTo": [
+            [
+                {
+                    height: `+=300px`,
+                    bottom: `-${rand(100)}px`,
+                    left: `${(1440 * 1) + 400 + rand(600)}px`,
+                }
+            ],
+            [
+                {
+                    height: `+=300px`,
+                    bottom: `-${rand(100)}px`,
+                    left: `${(1440 * 2) + 400 + rand(600)}px`,
+                }
+            ],
+            [
+                {
+                    height: `+=300px`,
+                    bottom: `-${rand(100)}px`,
+                    left: `${(1440 * 3) + 400 + rand(600)}px`,
+                }
+            ]
         ]
+
 
     },
 
     {
         "name": "witch",
         "srcNormal": "./witch/witch.gif",
-        "srcAtk": "./witch/witch-atk.gif",
+        "srcAtk": "./witch/witch.gif",
+        "atkWait": 500,
         "atk": 1,
         "score": 2,
         "setPosition": [
             [
                 {
-                    "bottom": "200px",
-                    "left": "1940px"
+                    bottom: `${rand(200)}px`,
+                    left: `${(1440 * 1) + rand(1000)}px`
                 }
             ],
             [
                 {
-                    "bottom": "200px",
-                    "left": "3380px"
+                    bottom: `${rand(200)}px`,
+                    left: `${(1440 * 2) + rand(1000)}px`
                 }
             ],
             [
                 {
-                    "bottom": "200px",
-                    "left": "1640px"
+                    bottom: `${rand(200)}px`,
+                    left: `${(1440 * 3) + rand(1000)}px`
+                }
+            ]
+        ],
+        "moveTo": [
+            [
+                {
+
+                }
+            ],
+            [
+                {
+
+                }
+            ],
+            [
+                {
+
                 }
             ]
         ]
+
 
     },
 
@@ -112,31 +205,53 @@ const itemData = [
         "srcNormal": "./tank/tank.gif",
         "srcAtk": "./tank/tank-atk.gif",
         "srcDead": "./tank/tank-dead.gif",
+        "atkWait": 1850,
         "atk": 3,
         "score": 10,
         "setPosition": [
             [
                 {
-                    "height": `+=50px`,
-                    "bottom": "300px",
-                    "left": "2040px"
+                    height: `+=50px`,
+                    bottom: `${250 + rand(100)}px`,
+                    left: `${(1440 * 1) + 200 + rand(600)}px`
                 }
             ],
             [
                 {
-                    "height": `+=50px`,
-                    "bottom": "300px",
-                    "left": "3480px"
+                    height: `+=50px`,
+                    bottom: `${250 + rand(100)}px`,
+                    left: `${(1440 * 2) + 200 + rand(600)}px`
                 }
             ],
             [
                 {
-                    "height": `+=50px`,
-                    "bottom": "300px",
-                    "left": "4920px"
+                    height: `+=50px`,
+                    bottom: `${250 + rand(100)}px`,
+                    left: `${(1440 * 3) + 200 + rand(600)}px`
+                }
+            ]
+        ],
+        "moveTo": [
+            [
+                {
+                    "height": "+=300px",
+                    "bottom": `-${rand(100)}px`
+                }
+            ],
+            [
+                {
+                    "height": "+=300px",
+                    "bottom": `-${rand(100)}px`
+                }
+            ],
+            [
+                {
+                    "height": "+=300px",
+                    "bottom": `-${rand(100)}px`
                 }
             ]
         ]
+
     },
 
     {
@@ -144,31 +259,53 @@ const itemData = [
         "srcNormal": "./tank/tank-run.gif",
         "srcAtk": "./tank/tank-atk2.gif",
         "srcDead": "./tank/tank-dead.gif",
+        "atkWait": 650,
         "atk": 3,
         "score": 10,
         "setPosition": [
             [
                 {
-                    "height": `+=50px`,
-                    "bottom": "300px",
-                    "left": "2040px"
+                    height: `+=50px`,
+                    bottom: `${250 + rand(100)}px`,
+                    left: `${(1440 * 1) + 200 + rand(600)}px`
                 }
             ],
             [
                 {
-                    "height": `+=50px`,
-                    "bottom": "300px",
-                    "left": "3480px"
+                    height: `+=50px`,
+                    bottom: `${250 + rand(100)}px`,
+                    left: `${(1440 * 2) + 200 + rand(600)}px`
                 }
             ],
             [
                 {
-                    "height": `+=50px`,
-                    "bottom": "300px",
-                    "left": "4920px"
+                    height: `+=50px`,
+                    bottom: `${250 + rand(100)}px`,
+                    left: `${(1440 * 3) + 200 + rand(600)}px`
+                }
+            ]
+        ],
+        "moveTo": [
+            [
+                {
+                    "height": "+=300px",
+                    "bottom": `-${rand(100)}px`
+                }
+            ],
+            [
+                {
+                    "height": "+=300px",
+                    "bottom": `-${rand(100)}px`
+                }
+            ],
+            [
+                {
+                    "height": "+=300px",
+                    "bottom": `-${rand(100)}px`
                 }
             ]
         ]
+
     },
     {
         "name": "life",
@@ -177,26 +314,44 @@ const itemData = [
         "setPosition": [
             [
                 {
-                    "height": `100px`,
-                    "bottom": "100px",
-                    "left": "1940px"
+                    height: `100px`,
+                    bottom: `${rand(200)}px`,
+                    left: `${(1440 * 1) + rand(1000)}px`
                 }
             ],
             [
                 {
-                    "height": `100px`,
-                    "bottom": "200px",
-                    "left": "3380px"
+                    height: `100px`,
+                    bottom: `${rand(200)}px`,
+                    left: `${(1440 * 2) + rand(1000)}px`
                 }
             ],
             [
                 {
-                    "height": `100px`,
-                    "bottom": "300px",
-                    "left": "4820px"
+                    height: `100px`,
+                    bottom: `${rand(200)}px`,
+                    left: `${(1440 * 3) + rand(1000)}px`
+                }
+            ]
+        ],
+        "moveTo": [
+            [
+                {
+                    "height": `+=10px`
+                }
+            ],
+            [
+                {
+                    "height": `+=10px`
+                }
+            ],
+            [
+                {
+                    "height": `+=10px`
                 }
             ]
         ]
+
     }
 
 ]

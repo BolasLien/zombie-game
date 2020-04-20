@@ -625,59 +625,73 @@
             // 移動東西
             const moveItem = (item) => {
                 item.fadeTo("slow", 1, function () {
-
-                    switch (getItemName(item)) {
-                        case "boomer":
-                            item.animate({
-                                bottom: `-${rand(100)}px`,
-                                left: `${(1440 * now) + rand(1000)}px`,
-                                height: `+=200px`
-                            }, 1500, function () {
-                                item.attr("src", "./boomer/boomer-atk.gif")
-                                setTimeout(() => { atk(item) }, 500)
+                    for (let obj of itemData) {
+                        if (getItemName(item) == obj.name) {
+                            item.animate(obj.moveTo[level - 1][0], 1500, function () {
+                                item.attr("src", obj.srcAtk)
+                                setTimeout(() => {
+                                    if (isEnemy(item)) {
+                                        atk(item)
+                                    }
+                                    else {
+                                        moveItem(item)
+                                    }
+                                }, obj.atkWait);
                             })
-                            break;
-                        case "tank":
-                            item.animate({
-                                height: "+=300px",
-                                bottom: `-${rand(100)}px`,
-                            }, 1500, function () {
-                                let r = rand(10);
-                                item.attr("src", (r > 5) ? "./tank/tank-atk.gif" : "./tank/tank-atk2.gif")
-                                setTimeout(() => { atk(item) }, (r > 5) ? 1850 : 650)
-                            })
-                            break;
-                        case "witch":
-                            console.log("witch no move");
-                            break;
-                        case "chager":
-                            item.animate({
-                                height: `+=300px`,
-                                bottom: `-${rand(100)}px`,
-                                left: `${(1440 * now) + 400 + rand(600)}px`,
-                            }, 1500, function () {
-                                item.attr("src", "./chager/chager-atk.gif")
-                                setTimeout(() => { atk(item) }, 550)
-                            })
-                            break;
-                        case "smoke":
-                            item.animate({
-                                height: `+=50px`
-                            }, 1000, function () {
-                                item.attr("src", "./smoke/smoke-atk.gif")
-                                setTimeout(() => { atk(item) }, 600)
-                            })
-                            break;
-                        case "life":
-                            item.animate({
-                                bottom: `+=50px`,
-                            }, 500).animate({
-                                bottom: `-=50px`,
-                            }, 500, function () {
-                                moveItem(item);
-                            })
-                            break;
+                        }
                     }
+                    // switch (getItemName(item)) {
+                    //     case "boomer":
+                    //         item.animate({
+                    //             bottom: `-${rand(100)}px`,
+                    //             left: `${(1440 * now) + rand(1000)}px`,
+                    //             height: `+=200px`
+                    //         }, 1500, function () {
+                    //             item.attr("src", "./boomer/boomer-atk.gif")
+                    //             setTimeout(() => { atk(item) }, 500)
+                    //         })
+                    //         break;
+                    //     case "tank":
+                    //         item.animate({
+                    //             height: "+=300px",
+                    //             bottom: `-${rand(100)}px`,
+                    //         }, 1500, function () {
+                    //             let r = rand(10);
+                    //             item.attr("src", (r > 5) ? "./tank/tank-atk.gif" : "./tank/tank-atk2.gif")
+                    //             setTimeout(() => { atk(item) }, (r > 5) ? 1850 : 650)
+                    //         })
+                    //         break;
+                    //     case "witch":
+                    //         console.log("witch no move");
+                    //         break;
+                    //     case "chager":
+                    //         item.animate({
+                    //             height: `+=300px`,
+                    //             bottom: `-${rand(100)}px`,
+                    //             left: `${(1440 * now) + 400 + rand(600)}px`,
+                    //         }, 1500, function () {
+                    //             item.attr("src", "./chager/chager-atk.gif")
+                    //             setTimeout(() => { atk(item) }, 550)
+                    //         })
+                    //         break;
+                    //     case "smoke":
+                    //         item.animate({
+                    //             height: `+=50px`
+                    //         }, 1000, function () {
+                    //             item.attr("src", "./smoke/smoke-atk.gif")
+                    //             setTimeout(() => { atk(item) }, 600)
+                    //         })
+                    //         break;
+                    //     case "life":
+                    //         item.animate({
+                    //             bottom: `+=50px`,
+                    //         }, 500).animate({
+                    //             bottom: `-=50px`,
+                    //         }, 500, function () {
+                    //             moveItem(item);
+                    //         })
+                    //         break;
+                    // }
 
                 })
 
