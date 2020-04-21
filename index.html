@@ -627,17 +627,17 @@
                 item.fadeTo("slow", 1, function () {
                     for (let obj of itemData) {
                         if (getItemName(item) == obj.name) {
-                            item.animate(obj.moveTo[level - 1][0], 1500, function () {
-                                item.attr("src", obj.srcAtk)
-                                setTimeout(() => {
-                                    if (isEnemy(item)) {
-                                        atk(item)
-                                    }
-                                    else {
-                                        moveItem(item)
-                                    }
-                                }, obj.atkWait);
-                            })
+                            if (isEnemy(item)) {
+                                item.animate(obj.moveTo[level - 1][0], 1500, function () {
+                                    item.attr("src", obj.srcAtk)
+                                    setTimeout(() => { atk(item) }, obj.atkWait);
+                                })
+                            }
+                            else {
+                                item.animate(obj.moveTo[level - 1][0], 500).animate(obj.moveTo[level - 1][1], 500, function () {
+                                    moveItem(item)
+                                })
+                            }
                         }
                     }
                     // switch (getItemName(item)) {
