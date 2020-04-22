@@ -139,6 +139,32 @@
             bottom: 50px;
         }
 
+        #ui-panel #HUD #game-life #game-life-bar {
+            width: 223px;
+            height: 30px;
+            position: absolute;
+            right: 4px;
+            bottom: 2px;
+        }
+
+        #ui-panel #HUD #game-life #game-life-bg {
+            background-image: url(./ui/game-life-bg.png);
+            width: 30px;
+            height: 30px;
+            position: absolute;
+            left: 80px;
+            bottom: 40px;
+        }
+
+        #ui-panel #HUD #game-life #game-life-text {
+            font-size: 30px;
+            font-family: sans-serif;
+            color: #00ff22;
+            height: 30px;
+            position: absolute;
+            left: 120px;
+            bottom: 40px;
+        }
 
         #ui-panel #hurt {
             background-color: red;
@@ -262,7 +288,11 @@
             <div id="HUD">
                 <div id="game-time"></div>
                 <div id="game-score"></div>
-                <div id="game-life"></div>
+                <div id="game-life">
+                    <progress id="game-life-bar" value="10" max="100"></progress>
+                    <div id="game-life-bg"></div>
+                    <div id="game-life-text">10</div>
+                </div>
             </div>
             <div id="hurt"></div>
             <div id="dead"></div>
