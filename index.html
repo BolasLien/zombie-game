@@ -364,13 +364,30 @@
                 return Math.round(Math.random() * num);
             }
 
+            // 分數改變
+            const changeScore = (num) => {
+                $("#text-score").text(num);
+                $("#game-score").text(num);
+                $("#record-score").text(num)
+            }
+
+            // 生命值改變
+            const changeLife = (num) => {
+                $("#text-life").text(num)
+                $("#record-life").text(num);
+                $("#game-life-text").text(num);
+                $("#game-life-bar").val(num);
+            }
+
             //遊戲結束
             const gameOver = () => {
                 $("#HUD").fadeTo(100, 0)
 
-                $("#record-score").text(score)
-                $("#record-life").text(life)
+                changeScore(score);
                 $("#record-total-score").text(0)
+
+                // 生命值更新
+                changeLife(life);
 
                 setTimeout(() => {
                     $("#game-result").fadeTo(500, 1);
@@ -387,6 +404,7 @@
                 }, 3000);
 
                 clearInterval(gametimer);
+
                 // 啟用開始按鈕
                 $("#start-btn").attr("disabled", false);
 
@@ -497,15 +515,15 @@
 
                 // 重設
                 score = 0;
-                $("#text-score").text(score);
-                $("#game-score").text(score);
+                changeScore(score);
 
                 timeleft = 30;
                 $("#text-time").text(timeleft);
                 $("#game-time").text(timeleft);
 
                 life = 10;
-                $("#text-life").text(life);
+                changeLife(life);
+
 
                 // 遊戲倒數
                 gametimer = setInterval(() => {
@@ -520,6 +538,7 @@
 
 
                     if (life <= 0) {
+                        life = 0;
                         // 如果玩家死掉了，就結束遊戲
                         $("#dead").fadeTo(100, 1, function () {
                             $("#panel").addClass("blur")
@@ -579,7 +598,7 @@
 
             //是不是怪物
             const isEnemy = (item) => {
-                return item.hasClass("boomer") || item.hasClass("tank") || item.hasClass("witch") || item.hasClass("chager") || item.hasClass("smoke");
+                return item.hasClass("boomer") || item.hasClass("tank") || item.hasClass("witch") || item.hasClass("chager") || item.hasClass("smoke") || item.hasClass("tank-run");
             }
 
             //取得物品名稱
@@ -606,49 +625,6 @@
                             item.css(obj.setPosition[level - 1][0])
                         }
                     }
-
-                    // switch (getItemName(item)) {
-                    //     case "boomer":
-                    //         item.css({
-                    //             bottom: `${rand(200) + 400}px`,
-                    //             left: `${(1440 * now) + rand(400)}px`
-                    //         })
-                    //         break;
-                    //     case "tank":
-                    //         item.css({
-                    //             height: `+=50px`,
-                    //             bottom: `${250 + rand(100)}px`,
-                    //             left: `${(1440 * now) + 200 + rand(600)}px`
-                    //         })
-                    //         break;
-                    //     case "witch":
-                    //         item.css({
-                    //             bottom: `${rand(200)}px`,
-                    //             left: `${(1440 * now) + rand(1000)}px`
-                    //         })
-                    //         break;
-                    //     case "chager":
-                    //         item.css({
-                    //             height: `+=50px`,
-                    //             bottom: `${100 + rand(100)}px`,
-                    //             left: `${(1440 * now) + 800 + rand(400)}px`
-                    //         })
-                    //         break;
-                    //     case "smoke":
-                    //         item.css({
-                    //             height: `+=150px`,
-                    //             bottom: `${rand(100)}px`,
-                    //             left: `${(1440 * now) + rand(400)}px`
-                    //         })
-                    //         break;
-                    //     case "life":
-                    //         item.css({
-                    //             height: `100px`,
-                    //             bottom: `${rand(200)}px`,
-                    //             left: `${(1440 * now) + rand(1000)}px`
-                    //         })
-                    //         break;
-                    // }
                 })
             }
 
@@ -670,59 +646,6 @@
                             }
                         }
                     }
-                    // switch (getItemName(item)) {
-                    //     case "boomer":
-                    //         item.animate({
-                    //             bottom: `-${rand(100)}px`,
-                    //             left: `${(1440 * now) + rand(1000)}px`,
-                    //             height: `+=200px`
-                    //         }, 1500, function () {
-                    //             item.attr("src", "./boomer/boomer-atk.gif")
-                    //             setTimeout(() => { atk(item) }, 500)
-                    //         })
-                    //         break;
-                    //     case "tank":
-                    //         item.animate({
-                    //             height: "+=300px",
-                    //             bottom: `-${rand(100)}px`,
-                    //         }, 1500, function () {
-                    //             let r = rand(10);
-                    //             item.attr("src", (r > 5) ? "./tank/tank-atk.gif" : "./tank/tank-atk2.gif")
-                    //             setTimeout(() => { atk(item) }, (r > 5) ? 1850 : 650)
-                    //         })
-                    //         break;
-                    //     case "witch":
-                    //         console.log("witch no move");
-                    //         break;
-                    //     case "chager":
-                    //         item.animate({
-                    //             height: `+=300px`,
-                    //             bottom: `-${rand(100)}px`,
-                    //             left: `${(1440 * now) + 400 + rand(600)}px`,
-                    //         }, 1500, function () {
-                    //             item.attr("src", "./chager/chager-atk.gif")
-                    //             setTimeout(() => { atk(item) }, 550)
-                    //         })
-                    //         break;
-                    //     case "smoke":
-                    //         item.animate({
-                    //             height: `+=50px`
-                    //         }, 1000, function () {
-                    //             item.attr("src", "./smoke/smoke-atk.gif")
-                    //             setTimeout(() => { atk(item) }, 600)
-                    //         })
-                    //         break;
-                    //     case "life":
-                    //         item.animate({
-                    //             bottom: `+=50px`,
-                    //         }, 500).animate({
-                    //             bottom: `-=50px`,
-                    //         }, 500, function () {
-                    //             moveItem(item);
-                    //         })
-                    //         break;
-                    // }
-
                 })
 
             }
@@ -737,7 +660,8 @@
                                 life -= obj.atk;
                             }
                         }
-                        $("#text-life").text(life);
+                        changeLife(life);
+
                     })
                 }
             }
@@ -765,14 +689,14 @@
                         }
                     }
 
-                    $("#text-score").text(score);
-                    $("#game-score").text(score);
+                    changeScore(score);
                 }
                 else {
                     $(this).remove();
                     $(this).stop();
                     life++;
-                    $("#text-life").text(life);
+                    changeLife(life);
+
                 }
 
                 $(this).css("pointer-events", "none");
