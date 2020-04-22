@@ -309,7 +309,7 @@ const itemData = [
     },
     {
         "name": "life",
-        "srcNormal": "./life.png",
+        "srcNormal": "./UI/life.png",
         "life": 1,
         "setPosition": [
             [
