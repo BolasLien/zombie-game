@@ -12,6 +12,7 @@
             -moz-user-select: none;
             -o-user-select: none;
             user-select: none;
+            font-family: 'Microsoft JhengHei';
         }
 
         #game {
@@ -111,7 +112,7 @@
             left: 780px;
             top: 50px;
             font-size: 50px;
-            color: #999;
+            color: #fff;
             text-align: center;
             line-height: 64px;
         }
@@ -124,7 +125,7 @@
             left: 400px;
             top: 50px;
             font-size: 50px;
-            color: #999;
+            color: #f00;
             text-align: center;
             line-height: 66px;
 
@@ -158,12 +159,12 @@
 
         #ui-panel #HUD #game-life #game-life-text {
             font-size: 30px;
-            font-family: sans-serif;
             color: #00ff22;
             height: 30px;
             position: absolute;
             left: 120px;
             bottom: 40px;
+            line-height: 30px;
         }
 
         #ui-panel #hurt {
@@ -178,7 +179,7 @@
             background-image: url(./ui/loading.jpg);
         }
 
-        #ui-panel #loading #progress {
+        #ui-panel #loading #loading-bar {
             position: absolute;
             width: 220px;
             height: 20px;
@@ -262,6 +263,25 @@
             text-shadow: 2px 2px 5px #000000;
             line-height: 3;
         }
+
+        #ui-panel #game-result #board #record #record-life {
+            color: #00ff22;
+        }
+
+        #ui-panel #game-result #board #record-score {
+            color: #f00;
+        }
+
+        #ui-panel #game-result #board #record-total-score {
+            color: #ffffcc;
+        }
+
+        .popText {
+            position: absolute;
+            font-size: 20px;
+            text-align: center;
+            height: 20px;
+        }
     </style>
 </head>
 
@@ -300,7 +320,7 @@
                 <div id="next-level-btn"></div>
             </div>
             <div id="loading">
-                <progress id="progress" value="0" max="100"></progress>
+                <progress id="loading-bar" value="0" max="100"></progress>
             </div>
             <div id="game-result">
                 <div id="title"></div>
@@ -318,7 +338,7 @@
     </div>
 
 
-    <script src="jquery-3.5.0.min.js"></script>
+    <script src="./scripts/jquery-3.5.0.min.js"></script>
     <script src="./scripts/gameData.js"></script>
     <script>
         $(function () {
@@ -359,6 +379,15 @@
                 $("#panel").animate({ left: `-${move}px` }, 1000)
             }
 
+            // pop text
+            const popText = (text, color, left, top, width) => {
+                console.log(`left=${left} top=${top} width=${width}`);
+                $("#panel").append(`<div class="popText" style="color:${color}; left:${left}; top:${top}; width:${width}">${text}</div>`);
+                $(`.popText`).animate({ top: "-=50px" }, 500).fadeTo(500, 0, function () {
+                    $(this).remove();
+                })
+            }
+
             // 隨機數字
             const rand = (num) => {
                 return Math.round(Math.random() * num);
@@ -384,10 +413,9 @@
                 $("#HUD").fadeTo(100, 0)
 
                 changeScore(score);
+                changeLife(life);
                 $("#record-total-score").text(0)
 
-                // 生命值更新
-                changeLife(life);
 
                 setTimeout(() => {
                     $("#game-result").fadeTo(500, 1);
@@ -395,12 +423,12 @@
                 }, 1000);
 
                 let timer = setInterval(() => {
-                    $("#record-total-score").text(rand(300))
+                    $("#record-total-score").text(rand(score + life * 10))
 
                 }, 50);
                 setTimeout(() => {
                     clearInterval(timer);
-                    $("#record-total-score").text(score)
+                    $("#record-total-score").text(score + life * 10)
                 }, 3000);
 
                 clearInterval(gametimer);
@@ -426,7 +454,7 @@
                     isLoading = true;
 
                     //讀取條歸零
-                    $("#progress").val(0)
+                    $("#loading-bar").val(0)
                     //背景模糊
                     $("#panel").addClass("blur");
                     // 打開HUD
@@ -442,7 +470,7 @@
                         // 讀取條
                         let i = 0;
                         let timer = setInterval(() => {
-                            $("#progress").val(i * tl / 160)
+                            $("#loading-bar").val(i * tl / 160)
                             i++;
                         }, tl / 10);
 
@@ -673,8 +701,16 @@
                 }
 
                 if (isEnemy($(this))) {
+                    // 點到的怪物計分
+                    for (let obj of itemData) {
+                        if (getItemName($(this)) == obj.name) {
+                            score += obj.score;
+                            popText(obj.score, "#f00", $(this).css("left"), $(this).css("top"), $(this).css("width"));
+                        }
+                    }
+
                     $(this).addClass("dead")
-                    $(this).attr("src", "./blood.png")
+                    $(this).attr("src", "./UI/blood.png")
                     $(this).stop();
                     $(this).css({
                         height: `100px`,
@@ -682,20 +718,18 @@
                     })
                     $(this).fadeOut("slow");
 
-                    // 點到的怪物計分
-                    for (let obj of itemData) {
-                        if (getItemName($(this)) == obj.name) {
-                            score += obj.score;
-                        }
-                    }
+
+
 
                     changeScore(score);
                 }
                 else {
-                    $(this).remove();
-                    $(this).stop();
                     life++;
                     changeLife(life);
+                    popText(1, "#0f0", $(this).css("left"), $(this).css("top"), $(this).css("width"));
+
+                    $(this).remove();
+                    $(this).stop();
 
                 }
 
@@ -703,6 +737,8 @@
 
                 console.log("click " + getItemName($(this)));
             })
+
+
 
 
         })
