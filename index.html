@@ -242,15 +242,6 @@
             top: 163px;
         }
 
-        #ui-panel #game-result #board #charts {
-            top: 37px;
-            width: 480px;
-            height: 500px;
-            position: relative;
-            float: left;
-            left: 40px;
-        }
-
         #ui-panel #game-result #board #record {
             top: 37px;
             width: 480px;
@@ -261,7 +252,7 @@
             font-size: 50px;
             color: #999;
             text-shadow: 2px 2px 5px #000000;
-            line-height: 3;
+            line-height: 2;
         }
 
         #ui-panel #game-result #board #record #record-life {
@@ -279,6 +270,29 @@
         #ui-panel #game-result #board #record-text {
             font-size: 20px;
             line-height: 10px;
+        }
+
+        #ui-panel #game-result #board #record-board {
+            top: 37px;
+            width: 480px;
+            height: 500px;
+            position: relative;
+            float: left;
+            left: 40px;
+            color: #ffffcc;
+            font-size: 40px;
+            line-height: 50px;
+
+        }
+
+        #record-board-table tr td {
+            width: 200px;
+            text-align: center;
+        }
+
+        .rank {
+            font-size: 30px;
+            line-height: 40px;
         }
 
         .popText {
@@ -330,8 +344,17 @@
             <div id="game-result">
                 <div id="title"></div>
                 <div id="board">
-                    <div id="charts"></div>
+                    <div id="record-board">
+                        <table id="record-board-table">
+                            <tr>
+                                <td>名次</td>
+                                <td>玩家</td>
+                                <td>總成績</td>
+                            </tr>
+                        </table>
+                    </div>
                     <div id="record">
+                        <div id="name">玩家：<span id="record-name"></span></div>
                         <div id="score">殺敵得分：<span id="record-score">0</span></div>
                         <div id="life">生命值：<span id="record-life">10</span></div>
                         <div id="total-score">總成績：<span id="record-total-score">0</span></div>
@@ -346,6 +369,7 @@
 
     <script src="./scripts/jquery-3.5.0.min.js"></script>
     <script src="./scripts/gameData.js"></script>
+    <script src="./scripts/recordBoard.js"></script>
     <script>
         $(function () {
 
@@ -367,6 +391,7 @@
             let level = 0;
             // 生東西機率 [boomer, smoke, chager, witch, tank, tank-run, life]
             let randItem = [];
+
 
             $("#home").css("pointer-events", "none")
             $("#next-level-btn").css("pointer-events", "none")
@@ -422,6 +447,23 @@
                 changeLife(life);
                 $("#record-total-score").text(0)
 
+                // 上傳成績
+                $("#record-name").text("訪客" + rand(200));
+                let r = createRecord($("#record-name").text(), score + (life * 10));
+                setRecords(r);
+
+                // 列出排行榜名單
+                $(".rank").remove();
+                if (records.length > 0) {
+                    rank = 1;
+                    for (let record of records) {
+                        $("#record-board-table").append(`<tr class="rank">
+                            <td>${rank}</td>
+                            <td>${record.name}</td>
+                                <td>${record.totalScore}</td></tr>`)
+                        rank++;
+                    }
+                }
 
                 setTimeout(() => {
                     $("#game-result").fadeTo(500, 1);
