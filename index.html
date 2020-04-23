@@ -392,8 +392,16 @@
             let level = 0;
             // 生東西機率 [boomer, smoke, chager, witch, tank, tank-run, life]
             let randItem = [];
+            // 背景音樂
+            let audio = new Audio();
 
 
+            const audioPlay = (src) => {
+                audio.src = src;
+                audio.play();
+            }
+
+            audioPlay(soundData.home);
             $("#home").css("pointer-events", "none")
             $("#next-level-btn").css("pointer-events", "none")
 
@@ -472,6 +480,8 @@
                 setTimeout(() => {
                     $("#game-result").fadeTo(500, 1);
                     $("#home").css("pointer-events", "all")
+                    audioPlay(soundData.end);
+
                 }, 1000);
 
                 // 總成績計算演出
@@ -531,6 +541,9 @@
                         }, tl / 10);
 
                         setTimeout(() => {
+                            audioPlay(soundData.level[level - 1]);
+
+
                             $("#panel").removeClass("blur");
                             // 打開HUD
                             $("#HUD").fadeTo(1000, 1);

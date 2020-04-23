@@ -372,3 +372,8 @@ const levelData = [
     [0, 0, 0, 0, 100, 100, 20]
 ]
 
+const soundData = {
+    home: "./music/l4d2_c4_pc.mp3",
+    level: ["./music/bloodharvestor2.wav", "./music/bloodharvestor2.wav", "./music/tank.wav"],
+    end: "./music/themonsterswithout.wav"
+}
