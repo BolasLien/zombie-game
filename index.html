@@ -441,8 +441,10 @@
 
             //遊戲結束
             const gameOver = () => {
+                // 關閉HUD
                 $("#HUD").fadeTo(100, 0)
 
+                // 更新分數及生命值
                 changeScore(score);
                 changeLife(life);
                 $("#record-total-score").text(0)
@@ -465,14 +467,15 @@
                     }
                 }
 
+                // 遊戲結算畫面開啟
                 setTimeout(() => {
                     $("#game-result").fadeTo(500, 1);
                     $("#home").css("pointer-events", "all")
                 }, 1000);
 
+                // 總成績計算演出
                 let timer = setInterval(() => {
                     $("#record-total-score").text(rand(score + life * 10))
-
                 }, 50);
                 setTimeout(() => {
                     clearInterval(timer);
@@ -487,10 +490,12 @@
                 // 清場
                 $("#game img").stop();
                 $("#game img").remove();
+
                 itemid = 0;
-                sceneChange(4)
                 level = 0;
                 isPlaying = false;
+                sceneChange(4)
+
             }
 
             //換關卡
@@ -511,6 +516,8 @@
                     // 清場
                     $("#game img").stop();
                     $("#game img").remove();
+
+                    // loading畫面
                     $("#loading").fadeTo(100, 1, function () {
                         // loading秒數
                         let tl = 2000;
@@ -604,9 +611,11 @@
                 // 遊戲倒數
                 gametimer = setInterval(() => {
 
+                    // 如果現在正在loading就跳出
                     if (isLoading) {
                         return;
                     }
+
                     // 倒數
                     timeleft--;
                     $("#text-time").text(timeleft);
