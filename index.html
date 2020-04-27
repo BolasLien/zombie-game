@@ -70,7 +70,6 @@
         }
     </style>
     <link rel="stylesheet" href="./css/uipanel.css">
-
 </head>
 
 <body>
@@ -160,19 +159,26 @@
             let level = 0;
             // 生東西機率 [boomer, smoke, chager, witch, tank, tank-run, life]
             let randItem = [];
-            // 背景音樂
-            let audio = new Audio();
+            // 音樂音效
+            let bgPlayer = new Audio();
+            let fxPlayer = new Audio();
 
 
-            const audioPlay = (src) => {
-                audio.src = src;
-                audio.play();
+
+            const playBg = (src) => {
+                bgPlayer.src = src;
+                bgPlayer.play();
+                bgPlayer.loop = true;
             }
 
-            // audioPlay(soundData.home);
+            const playOneShot = (src) => {
+                fxPlayer.src = src;
+                fxPlayer.play();
+            }
+
             $("#home").css("pointer-events", "none")
             $("#next-level-btn").css("pointer-events", "none")
-
+            playBg(soundData.bg[0]);
 
             // 畫面大小
             let now = 0;
@@ -185,6 +191,7 @@
                 const move = now * 1440;
                 $("#panel").stop(true, true)
                 $("#panel").animate({ left: `-${move}px` }, 1000)
+                playBg(soundData.bg[Num]);
             }
 
             // pop text
@@ -248,7 +255,6 @@
                 setTimeout(() => {
                     $("#game-result").fadeTo(500, 1);
                     $("#home").css("pointer-events", "all")
-                    audioPlay(soundData.end);
 
                 }, 1000);
 
@@ -309,9 +315,6 @@
                         }, tl / 10);
 
                         setTimeout(() => {
-                            audioPlay(soundData.level[level - 1]);
-
-
                             $("#panel").removeClass("blur");
                             // 打開HUD
                             $("#HUD").fadeTo(1000, 1);
@@ -337,6 +340,7 @@
             }
 
             $("#home").click(function () {
+                playOneShot(soundData.home)
                 $("#game-result").fadeTo(200, 0);
                 sceneChange(0)
                 $("#home").css("pointer-events", "none")
@@ -357,7 +361,9 @@
                 levelChange(level);
             })
 
+            // 點擊繼續
             $("#next-level-btn").click(function () {
+                playOneShot(soundData.next)
                 $("#time-out").fadeTo(300, 0, function () {
                     $("#panel").removeClass("blur")
                     level++;
@@ -564,13 +570,13 @@
                     changeScore(score);
                 }
                 else {
+                    playOneShot(soundData.life);
                     life++;
                     changeLife(life);
                     popText(1, "#0f0", $(this).css("left"), $(this).css("top"), $(this).css("width"));
 
                     $(this).remove();
                     $(this).stop();
-
                 }
 
                 $(this).css("pointer-events", "none");
