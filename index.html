@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="shortcut icon" href="./images/favicon.png" type="image/x-icon">
     <style>
         body {
             background-color: #000;
@@ -506,9 +507,10 @@
                                 })
                             }
                             else {
-                                item.animate(obj.moveTo[level - 1][0], 500).animate(obj.moveTo[level - 1][1], 500, function () {
+                                item.animate(obj.moveTo[0][0], 500).animate(obj.moveTo[0][1], 500, function () {
                                     moveItem(item)
                                 })
+
                             }
                         }
                     }
