@@ -68,3 +68,9 @@ pop text功能<br>
 
 ### 0423
 排行榜功能<br>
+
+### 0427
+bug修正<br>
+介面css獨立出來<br>
+UI目錄重新命名為images<br>
+新增favicon<br>
