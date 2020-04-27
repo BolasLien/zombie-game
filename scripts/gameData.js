@@ -377,5 +377,5 @@ const soundData = {
     life: "./music/gift_pickup.wav",
     next: "./music/alert_clink.wav",
     home: "./music/menu_accept.wav",
-
+    boomeratk: "./music/boomer_shoved_01.wav",
 }
