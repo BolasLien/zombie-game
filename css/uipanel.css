@@ -35,7 +35,7 @@ input[type="button"] {
 }
 
 #ui-panel #HUD #game-time {
-    background-image: url(../ui/game-time.png);
+    background-image: url(../images/game-time.png);
     width: 301px;
     height: 64px;
     position: absolute;
@@ -48,7 +48,7 @@ input[type="button"] {
 }
 
 #ui-panel #HUD #game-score {
-    background-image: url(../ui/game-score.png);
+    background-image: url(../images/game-score.png);
     width: 301px;
     height: 66px;
     position: absolute;
@@ -62,7 +62,7 @@ input[type="button"] {
 }
 
 #ui-panel #HUD #game-life {
-    background-image: url(../ui/game-life.png);
+    background-image: url(../images/game-life.png);
     width: 303px;
     height: 75px;
     position: absolute;
@@ -79,7 +79,7 @@ input[type="button"] {
 }
 
 #ui-panel #HUD #game-life #game-life-bg {
-    background-image: url(../ui/game-life-bg.png);
+    background-image: url(../images/game-life-bg.png);
     width: 30px;
     height: 30px;
     position: absolute;
@@ -103,11 +103,11 @@ input[type="button"] {
 
 #ui-panel #dead {
     background-color: rgba(255, 0, 0, 0.3);
-    background-image: url(../ui/you_are_dead.png);
+    background-image: url(../images/you_are_dead.png);
 }
 
 #ui-panel #loading {
-    background-image: url(../ui/loading.jpg);
+    background-image: url(../images/loading.jpg);
 }
 
 #ui-panel #loading #loading-bar {
@@ -118,7 +118,7 @@ input[type="button"] {
 }
 
 #ui-panel #time-out {
-    background-image: url(../ui/time-out.png);
+    background-image: url(../images/time-out.png);
 }
 
 #ui-panel #time-out #next-level-btn {
@@ -128,7 +128,7 @@ input[type="button"] {
     left: 640px;
     top: 470px;
     pointer-events: all;
-    background-image: url(../ui/next-level-btn.png);
+    background-image: url(../images/next-level-btn.png);
 }
 
 #ui-panel #time-out #next-level-btn:hover {
@@ -142,7 +142,7 @@ input[type="button"] {
     height: 53px;
     left: 520px;
     top: 50px;
-    background-image: url(../ui/Game-Result.png);
+    background-image: url(../images/Game-Result.png);
 }
 
 #ui-panel #game-result #home {
@@ -152,7 +152,7 @@ input[type="button"] {
     left: 640px;
     top: 800px;
     pointer-events: all;
-    background-image: url(../ui/home-btn.png);
+    background-image: url(../images/home-btn.png);
 }
 
 #ui-panel #game-result #home:hover {
@@ -162,7 +162,7 @@ input[type="button"] {
 
 #ui-panel #game-result {
 
-    background-image: url(../ui/result-frame.png);
+    background-image: url(../images/result-frame.png);
 }
 
 #ui-panel #game-result #board {
