@@ -68,21 +68,27 @@ const itemData = [
         "atk": 1,
         "score": 3,
         "setPosition": [
-            [{
-                height: `+=150px`,
-                bottom: `${rand(100)}px`,
-                left: `${(1440 * 1) + rand(400)}px`
-            }],
-            [{
-                height: `+=150px`,
-                bottom: `${rand(100)}px`,
-                left: `${(1440 * 2) + rand(400)}px`
-            }],
-            [{
-                height: `+=150px`,
-                bottom: `${rand(100)}px`,
-                left: `${(1440 * 3) + rand(400)}px`
-            }]
+            [
+                {
+                    height: `+=150px`,
+                    bottom: `${rand(100)}px`,
+                    left: `${(1440 * 1) + rand(400)}px`
+                }
+            ],
+            [
+                {
+                    height: `+=150px`,
+                    bottom: `${rand(100)}px`,
+                    left: `${(1440 * 2) + rand(400)}px`
+                }
+            ],
+            [
+                {
+                    height: `+=150px`,
+                    bottom: `${rand(100)}px`,
+                    left: `${(1440 * 3) + rand(400)}px`
+                }
+            ]
         ],
         "moveTo": [
             [
