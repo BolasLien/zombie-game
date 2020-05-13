@@ -557,6 +557,7 @@
                     // 點到的怪物計分
                     for (let obj of itemData) {
                         if (getItemName($(this)) == obj.name) {
+                            playOneShot(obj.sfxDead)
                             score += obj.score;
                             popText(obj.score, "#f00", $(this).css("left"), $(this).css("top"), $(this).css("width"));
                         }
