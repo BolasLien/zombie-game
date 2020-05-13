@@ -355,26 +355,26 @@ const itemData = [
         "moveTo": [
             [
                 {
-                    bottom: `+=50px`
+                    top: `+=50px`
                 },
                 {
-                    bottom: `-=50px`
+                    top: `-=50px`
                 }
             ],
             [
                 {
-                    bottom: `+=50px`
+                    top: `+=50px`
                 },
                 {
-                    bottom: `-=50px`
+                    top: `-=50px`
                 }
             ],
             [
                 {
-                    bottom: `+=50px`
+                    top: `+=50px`
                 },
                 {
-                    bottom: `-=50px`
+                    top: `-=50px`
                 }
             ]
         ]
