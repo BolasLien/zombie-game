@@ -286,9 +286,8 @@
 
             //換關卡
             const levelChange = (num) => {
+                // 如果還有下一關
                 if (level > 0 && level <= 3) {
-                    // 如果還有下一關
-
                     console.log("換關卡中");
                     isLoading = true;
 
@@ -412,6 +411,7 @@
 
 
                     if (life <= 0) {
+                        console.log("你死了");
                         life = 0;
                         // 如果玩家死掉了，就結束遊戲
                         $("#dead").fadeTo(100, 1, function () {
@@ -423,10 +423,9 @@
                                 $(this).fadeTo(300, 0);
                             }, 1500);
                         })
-
-                        console.log("你死了");
                     }
                     else if (timeleft == 0) {
+                        console.log("時間到");
                         isLoading = true;
                         isPlaying = false;
                         // 時間到換關卡
@@ -435,7 +434,6 @@
                         $("#next-level-btn").css("pointer-events", "all")
                         $("#panel").css("pointer-events", "none")
 
-                        console.log("時間到");
                     }
                     else {
                         // 10次隨機裡面，如果符合機率就產生東西
@@ -458,10 +456,6 @@
                 src = itemData[num].srcNormal;
                 name = itemData[num].name;
 
-                // 測試
-                // src = "./boomer/boomer.gif"
-                // name = "boomer";
-
                 $(`#panel`).append(`<img src=${src} id=item${itemid} class=${name} name=${name}>`);
 
                 setItemPosition($(`#item${itemid}`));
@@ -479,54 +473,46 @@
             const setItemPosition = (item) => {
                 item.fadeTo(10, 0, function () {
                     console.log("Set " + item.attr('name') + " Position");
-                    for (let obj of itemData) {
-                        if (item.attr('name') == obj.name) {
-                            item.css(obj.setPosition[level - 1][0])
-                        }
-                    }
+                    item.css(getItemByName(item.attr('name')).setPosition[level - 1][0])
                 })
             }
 
             // 移動東西
             const moveItem = (item) => {
                 item.fadeTo("slow", 1, function () {
-                    for (let obj of itemData) {
-                        if (item.attr('name') == obj.name) {
-                            if (isEnemy(item)) {
-                                item.animate(obj.moveTo[level - 1][0], 1500, function () {
-                                    item.attr("src", obj.srcAtk)
+                    let obj = getItemByName(item.attr('name'))
+                    if (isEnemy(item)) {
+                        item.animate(obj.moveTo[level - 1][0], 1500, function () {
+                            item.attr("src", obj.srcAtk)
 
-                                    setTimeout(() => {
-                                        atk(item)
-                                        playOneShot(obj.sfxAtk)
-                                    }, obj.atkWait);
-                                })
-                            }
-                            else {
-                                item.animate(obj.moveTo[0][0], 500).animate(obj.moveTo[0][1], 500, function () {
-                                    moveItem(item)
-                                })
+                            setTimeout(() => {
+                                atk(item)
+                                playOneShot(obj.sfxAtk)
+                            }, obj.atkWait);
+                        })
+                    }
+                    else {
+                        item.animate(obj.moveTo[0][0], 500).animate(obj.moveTo[0][1], 500, function () {
+                            moveItem(item)
+                        })
 
-                            }
-                        }
                     }
                 })
+            }
 
+            const getItemByName = (name) => {
+                let data = itemData.filter(item => name == item.name)
+                return data[0]
             }
 
             //怪物攻擊
             const atk = (enemy) => {
                 if (isPlaying && !enemy.hasClass("dead")) {
                     $("#hurt").fadeTo(150, 0.3).fadeTo(200, 0, function () {
+                        console.log(enemy.attr('name') + " atk you");
                         playOneShot(soundData.hurt[rand(5)])
-                        console.log(o[0]);
-                        for (let obj of itemData) {
-                            if (enemy.attr('name') == obj.name) {
-                                life -= obj.atk;
-                            }
-                        }
+                        life -= getItemByName(enemy.attr('name')).atk
                         changeLife(life);
-
                     })
                 }
             }
@@ -539,13 +525,10 @@
 
                 if (isEnemy($(this))) {
                     // 點到的怪物計分
-                    for (let obj of itemData) {
-                        if ($(this).attr('name') == obj.name) {
-                            playOneShot(obj.sfxDead)
-                            score += obj.score;
-                            popText(obj.score, "#f00", $(this).css("left"), $(this).css("top"), $(this).css("width"));
-                        }
-                    }
+                    let item = getItemByName($(this).attr('name'))
+                    playOneShot(item.sfxDead)
+                    score += item.score;
+                    popText(item.score, "#f00", $(this).css("left"), $(this).css("top"), $(this).css("width"));
 
                     $(this).addClass("dead")
                     $(this).attr("src", "./images/blood.png")
@@ -555,9 +538,6 @@
                         width: `200px`
                     })
                     $(this).fadeOut("slow");
-
-
-
 
                     changeScore(score);
                 }
@@ -572,7 +552,6 @@
                 }
 
                 $(this).css("pointer-events", "none");
-
                 console.log("click " + $(this).attr('name'));
             })
 
