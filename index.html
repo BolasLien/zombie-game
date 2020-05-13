@@ -92,6 +92,10 @@
                 <span>殺敵得分：<span id="text-score">0</span></span>
                 <span>剩餘時間：<span id="text-time">10</span>秒</span>
                 <span>生命值：<span id="text-life">10</span></span>
+                <span>
+                    x=<span id="x"></span>
+                    y=<span id="y"></span>
+                </span>
             </div>
             <div id="HUD">
                 <div id="game-time"></div>
@@ -164,7 +168,18 @@
             let bgPlayer = new Audio();
             let fxPlayer = new Audio();
 
+            $('#panel').on('mousemove', function (e) {
+                $('#x').text(e.offsetX)
+                $('#y').text(e.offsetY)
+            })
 
+
+            $('#panel').on('click', function (e) {
+                $("#panel").append(`<div class="popText" style="color:#ff0; text-align:center;"></div>`);
+                $(`.popText`).offset({ top: e.offsetY, left: e.offsetX })
+                let p = $(`.popText`).offset()
+                console.log('top=' + p.top + " left=" + p.left);
+            })
 
             const playBg = (src) => {
                 bgPlayer.src = src;
@@ -201,6 +216,12 @@
                 $(`.popText`).animate({ top: "-=50px" }, 500).fadeTo(500, 0, function () {
                     $(this).remove();
                 })
+            }
+
+            // 用名字找ItemData單筆資料
+            const getItemByName = (name) => {
+                let data = itemData.filter(item => name == item.name)
+                return data[0]
             }
 
             // 隨機數字
@@ -472,6 +493,7 @@
             const setItemPosition = (item) => {
                 item.fadeTo(10, 0, function () {
                     console.log("Set " + item.attr('name') + " Position");
+                    // item.offset({ top: rand(700), left: rand(1040) })
                     item.css(getItemByName(item.attr('name')).setPosition[level - 1][0])
                 })
             }
@@ -497,12 +519,6 @@
 
                     }
                 })
-            }
-
-            // 用名字找ItemData單筆資料
-            const getItemByName = (name) => {
-                let data = itemData.filter(item => name == item.name)
-                return data[0]
             }
 
             //怪物攻擊
