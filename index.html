@@ -197,7 +197,6 @@
 
             // pop text
             const popText = (text, color, left, top, width) => {
-                console.log(`left=${left} top=${top} width=${width}`);
                 $("#panel").append(`<div class="popText" style="color:${color}; left:${left}; top:${top}; width:${width}">${text}</div>`);
                 $(`.popText`).animate({ top: "-=50px" }, 500).fadeTo(500, 0, function () {
                     $(this).remove();
@@ -500,6 +499,7 @@
                 })
             }
 
+            // 用名字找ItemData單筆資料
             const getItemByName = (name) => {
                 let data = itemData.filter(item => name == item.name)
                 return data[0]
@@ -518,7 +518,7 @@
             }
 
             //點擊item事件
-            $("#game").on("mousedown", "img", function () {
+            $("#game").on("mousedown", "img", function (event) {
                 if (!isPlaying) {
                     return;
                 }
@@ -552,7 +552,7 @@
                 }
 
                 $(this).css("pointer-events", "none");
-                console.log("click " + $(this).attr('name'));
+                console.log("click " + $(this).attr('name') + " pageX= " + event.pageX + " left= " + $(this).css('left') + " pageY= " + event.pageY + " top= " + $(this).css('top'));
             })
 
 
