@@ -389,5 +389,5 @@ const soundData = {
     life: "./music/gift_pickup.wav",
     next: "./music/alert_clink.wav",
     home: "./music/menu_accept.wav",
-    hurt: ['./music/hurtminor01.wav', './music/hurtminor02.wav', './music/hurtminor03.wav', './music/hurtminor04.wav', './music/hurtminor05.wav', './music/hurtminor06.wavs']
+    hurt: ['./music/hurtminor01.wav', './music/hurtminor02.wav', './music/hurtminor03.wav', './music/hurtminor04.wav', './music/hurtminor05.wav', './music/hurtminor06.wav']
 }
