@@ -453,8 +453,6 @@
                         }
                     }
                 }, 1000);
-
-
             })
 
             //創建一個東西
@@ -480,7 +478,7 @@
             const setItemPosition = (item) => {
                 item.fadeTo(10, 0, function () {
                     console.log("Set " + item.attr('name') + " Position");
-                    item.offset({ top: rand(700), left: rand(1040) })
+                    item.offset({ top: rand(700), left: 200 + rand(1040) })
                     // item.css(getItemByName(item.attr('name')).setPosition[level - 1][0])
                 })
             }
@@ -490,17 +488,28 @@
                 item.fadeTo("slow", 1, function () {
                     let obj = getItemByName(item.attr('name'))
                     if (isEnemy(item)) {
-                        item.animate(obj.moveTo[level - 1][0], 1500, function () {
-                            item.attr("src", obj.srcAtk)
+                        item.animate(
+                            {
+                                height: obj.moveHeight,
+                                top: 700 - rand(400),
+                                left: 1440 * level + rand(1040) + 200
+                            }, 1500, function () {
+                                item.attr("src", obj.srcAtk)
 
-                            setTimeout(() => {
-                                atk(item)
-                                playOneShot(obj.sfxAtk)
-                            }, obj.atkWait);
-                        })
+                                setTimeout(() => {
+                                    atk(item)
+                                    playOneShot(obj.sfxAtk)
+                                }, obj.atkWait);
+                            })
                     }
                     else {
-                        item.animate(obj.moveTo[0][0], 500).animate(obj.moveTo[0][1], 500, function () {
+                        item.animate({
+                            height: `100px`,
+                            top: `-=50px`
+                        }, 500).animate({
+                            height: `100px`,
+                            top: `-=50px`
+                        }, 500, function () {
                             moveItem(item)
                         })
 
@@ -557,13 +566,7 @@
                 $(this).css("pointer-events", "none");
                 console.log("click " + $(this).attr('name'));
             })
-
-
-
-
         })
-
-
     </script>
 </body>
 

@@ -12,52 +12,8 @@ const itemData = [
         "atkWait": 500,
         "atk": 1,
         "score": 2,
-        "setPosition": [
-            [
-                {
-                    "bottom": `${rand(200) + 400}px`,
-                    "left": `${(1440 * 1) + rand(400)}px`
-                }
-            ],
-            [
-                {
-                    "bottom": `${rand(200) + 400}px`,
-                    "left": `${(1440 * 2) + rand(400)}px`
-                }
-            ],
-            [
-                {
-                    "bottom": `${rand(200) + 400}px`,
-                    "left": `${(1440 * 3) + rand(400)}px`
-                }
-            ]
-        ],
-        "moveTo": [
-            [
-                {
-                    "bottom": `-${rand(100)}px`,
-                    "left": `${1440 * 1 + rand(1000)}px`,
-                    "height": `+=200px`
-                }
-            ],
-            [
-                {
-                    "bottom": `-${rand(100)}px`,
-                    "left": `${1440 * 2 + rand(1000)}px`,
-                    "height": `+=200px`
-                }
-            ],
-            [
-                {
-                    "bottom": `-${rand(100)}px`,
-                    "left": `${1440 * 3 + rand(1000)}px`,
-                    "height": `+=200px`
-                }
-            ]
-        ]
-
+        "moveHeight": '+=200px'
     },
-
     {
         "name": "smoke",
         "srcNormal": "./smoke/smoke.gif",
@@ -67,48 +23,7 @@ const itemData = [
         "atkWait": 600,
         "atk": 1,
         "score": 3,
-        "setPosition": [
-            [
-                {
-                    height: `+=150px`,
-                    bottom: `${rand(100)}px`,
-                    left: `${(1440 * 1) + rand(400)}px`
-                }
-            ],
-            [
-                {
-                    height: `+=150px`,
-                    bottom: `${rand(100)}px`,
-                    left: `${(1440 * 2) + rand(400)}px`
-                }
-            ],
-            [
-                {
-                    height: `+=150px`,
-                    bottom: `${rand(100)}px`,
-                    left: `${(1440 * 3) + rand(400)}px`
-                }
-            ]
-        ],
-        "moveTo": [
-            [
-                {
-                    "height": `+=50px`
-                }
-            ],
-            [
-                {
-                    "height": `+=50px`
-                }
-            ],
-            [
-                {
-                    "height": `+=50px`
-                }
-            ]
-        ]
-
-
+        "moveHeight": '+=250px'
     },
 
     {
@@ -120,48 +35,7 @@ const itemData = [
         "atkWait": 550,
         "atk": 2,
         "score": 5,
-        "setPosition": [
-            [{
-                height: `+=50px`,
-                bottom: `${100 + rand(100)}px`,
-                left: `${(1440 * 1) + 800 + rand(400)}px`
-            }],
-            [{
-                height: `+=50px`,
-                bottom: `${100 + rand(100)}px`,
-                left: `${(1440 * 2) + 800 + rand(400)}px`
-            }],
-            [{
-                height: `+=50px`,
-                bottom: `${100 + rand(100)}px`,
-                left: `${(1440 * 3) + 800 + rand(400)}px`
-            }]
-        ],
-        "moveTo": [
-            [
-                {
-                    height: `+=300px`,
-                    bottom: `-${rand(100)}px`,
-                    left: `${(1440 * 1) + 400 + rand(600)}px`,
-                }
-            ],
-            [
-                {
-                    height: `+=300px`,
-                    bottom: `-${rand(100)}px`,
-                    left: `${(1440 * 2) + 400 + rand(600)}px`,
-                }
-            ],
-            [
-                {
-                    height: `+=300px`,
-                    bottom: `-${rand(100)}px`,
-                    left: `${(1440 * 3) + 400 + rand(600)}px`,
-                }
-            ]
-        ]
-
-
+        "moveHeight": '+=350px'
     },
 
     {
@@ -173,45 +47,7 @@ const itemData = [
         "atkWait": 500,
         "atk": 1,
         "score": 2,
-        "setPosition": [
-            [
-                {
-                    bottom: `${rand(200)}px`,
-                    left: `${(1440 * 1) + rand(1000)}px`
-                }
-            ],
-            [
-                {
-                    bottom: `${rand(200)}px`,
-                    left: `${(1440 * 2) + rand(1000)}px`
-                }
-            ],
-            [
-                {
-                    bottom: `${rand(200)}px`,
-                    left: `${(1440 * 3) + rand(1000)}px`
-                }
-            ]
-        ],
-        "moveTo": [
-            [
-                {
-
-                }
-            ],
-            [
-                {
-
-                }
-            ],
-            [
-                {
-
-                }
-            ]
-        ]
-
-
+        "moveHeight": '+=150px'
     },
 
     {
@@ -224,49 +60,7 @@ const itemData = [
         "atkWait": 1850,
         "atk": 3,
         "score": 10,
-        "setPosition": [
-            [
-                {
-                    height: `+=50px`,
-                    bottom: `${250 + rand(100)}px`,
-                    left: `${(1440 * 1) + 200 + rand(600)}px`
-                }
-            ],
-            [
-                {
-                    height: `+=50px`,
-                    bottom: `${250 + rand(100)}px`,
-                    left: `${(1440 * 2) + 200 + rand(600)}px`
-                }
-            ],
-            [
-                {
-                    height: `+=50px`,
-                    bottom: `${250 + rand(100)}px`,
-                    left: `${(1440 * 3) + 200 + rand(600)}px`
-                }
-            ]
-        ],
-        "moveTo": [
-            [
-                {
-                    "height": "+=300px",
-                    "bottom": `-${rand(100)}px`
-                }
-            ],
-            [
-                {
-                    "height": "+=300px",
-                    "bottom": `-${rand(100)}px`
-                }
-            ],
-            [
-                {
-                    "height": "+=300px",
-                    "bottom": `-${rand(100)}px`
-                }
-            ]
-        ]
+        "moveHeight": '+=350px'
 
     },
 
@@ -280,105 +74,12 @@ const itemData = [
         "atkWait": 650,
         "atk": 3,
         "score": 10,
-        "setPosition": [
-            [
-                {
-                    height: `+=50px`,
-                    bottom: `${250 + rand(100)}px`,
-                    left: `${(1440 * 1) + 200 + rand(600)}px`
-                }
-            ],
-            [
-                {
-                    height: `+=50px`,
-                    bottom: `${250 + rand(100)}px`,
-                    left: `${(1440 * 2) + 200 + rand(600)}px`
-                }
-            ],
-            [
-                {
-                    height: `+=50px`,
-                    bottom: `${250 + rand(100)}px`,
-                    left: `${(1440 * 3) + 200 + rand(600)}px`
-                }
-            ]
-        ],
-        "moveTo": [
-            [
-                {
-                    "height": "+=300px",
-                    "bottom": `-${rand(100)}px`
-                }
-            ],
-            [
-                {
-                    "height": "+=300px",
-                    "bottom": `-${rand(100)}px`
-                }
-            ],
-            [
-                {
-                    "height": "+=300px",
-                    "bottom": `-${rand(100)}px`
-                }
-            ]
-        ]
-
+        "moveHeight": '+=350px'
     },
     {
         "name": "life",
         "srcNormal": "./images/life.png",
-        "life": 1,
-        "setPosition": [
-            [
-                {
-                    height: `100px`,
-                    bottom: `${rand(200)}px`,
-                    left: `${(1440 * 1) + rand(1000)}px`
-                }
-            ],
-            [
-                {
-                    height: `100px`,
-                    bottom: `${rand(200)}px`,
-                    left: `${(1440 * 2) + rand(1000)}px`
-                }
-            ],
-            [
-                {
-                    height: `100px`,
-                    bottom: `${rand(200)}px`,
-                    left: `${(1440 * 3) + rand(1000)}px`
-                }
-            ]
-        ],
-        "moveTo": [
-            [
-                {
-                    top: `+=50px`
-                },
-                {
-                    top: `-=50px`
-                }
-            ],
-            [
-                {
-                    top: `+=50px`
-                },
-                {
-                    top: `-=50px`
-                }
-            ],
-            [
-                {
-                    top: `+=50px`
-                },
-                {
-                    top: `-=50px`
-                }
-            ]
-        ]
-
+        "life": 1
     }
 
 ]
