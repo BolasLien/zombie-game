@@ -28,6 +28,7 @@
         #panel {
             position: absolute;
             height: 900px;
+            cursor: url(./images/crosshair.cur), auto;
         }
 
         .scene {
@@ -70,7 +71,6 @@
         }
     </style>
     <link rel="stylesheet" href="./css/uipanel.css">
-
 </head>
 
 <body>
@@ -85,13 +85,32 @@
         </div>
         <div id="ui-panel">
             <div id="controller">
-                <input type="button" value="遊戲開始" id="start-btn">
+                <input type="button" value="遊戲開始" id="start-btn" class="start-btn">
                 <input type="button" value="結束遊戲" id="over-btn">
-                <input type="button" value="回首頁" id="home-btn">
+                <input type="button" value="回首頁" id="home-btn" class="home-btn">
                 <input type="button" value="跳下一關" id="next-btn">
                 <span>殺敵得分：<span id="text-score">0</span></span>
                 <span>剩餘時間：<span id="text-time">10</span>秒</span>
                 <span>生命值：<span id="text-life">10</span></span>
+                <span>
+                    x=<span id="x"></span>
+                    y=<span id="y"></span>
+                </span>
+            </div>
+            <div id="menu">
+                <div id="start-game" class="menu-btn start-btn">遊戲開始</div>
+                <div id="about-me" class="menu-btn">關於</div>
+                <div id="about-me-content">
+                    <h1>&nbsp;&nbsp;&nbsp;<a href="https://store.steampowered.com/app/550/Left_4_Dead_2/">《惡靈勢力
+                            2》</a></h1>
+                    <p>　是2008年由 <a href="https://store.steampowered.com/developer/valve">Valve</a>
+                        開發、以喪屍為主題的恐怖生存類遊戲《惡靈勢力》的續作。
+                    </p>
+                    <h1>&nbsp;&nbsp;&nbsp;關於本作品</h1>
+                    <p>　本人 BolasLien 在泰山職訓中心的前端網頁技術開發課程當中，為了練習JQuery語法所創作的小遊戲。本作品之程式邏輯皆為 BolasLien
+                        設計。本作品使用到的背景圖片、怪物造型、補血包造型、音樂音效皆屬於原作者 valve 所有。
+                    </p>
+                </div>
             </div>
             <div id="HUD">
                 <div id="game-time"></div>
@@ -130,7 +149,7 @@
                         <div id="record-text">*總成績 = 殺敵得分 + (生命值 x 10)</div>
                     </div>
                 </div>
-                <div id="home"></div>
+                <div id="home" class="home-btn"></div>
             </div>
         </div>
     </div>
@@ -160,19 +179,36 @@
             let level = 0;
             // 生東西機率 [boomer, smoke, chager, witch, tank, tank-run, life]
             let randItem = [];
-            // 背景音樂
-            let audio = new Audio();
+            // 音樂音效
+            let bgPlayer = new Audio();
+            let fxPlayer = new Audio();
+            // 是否開啟關於我
+            let openAbout = false
 
-
-            const audioPlay = (src) => {
-                audio.src = src;
-                audio.play();
+            const playBg = (src) => {
+                bgPlayer.src = src;
+                bgPlayer.play();
+                bgPlayer.loop = true;
             }
 
-            // audioPlay(soundData.home);
+            const playOneShot = (src) => {
+                fxPlayer.src = src;
+                fxPlayer.play();
+            }
+
+            $('#panel').on('mousemove', function (e) {
+                $('#x').text(e.offsetX)
+                $('#y').text(e.offsetY)
+            })
+
+            // 開發工具隱藏
+            $('#controller').css('display', 'none')
+
+
+            $("#menu").fadeTo(10, 1)
+            $(".menu-btn").css('pointer-events', 'all')
             $("#home").css("pointer-events", "none")
             $("#next-level-btn").css("pointer-events", "none")
-
 
             // 畫面大小
             let now = 0;
@@ -185,15 +221,21 @@
                 const move = now * 1440;
                 $("#panel").stop(true, true)
                 $("#panel").animate({ left: `-${move}px` }, 1000)
+                playBg(soundData.bg[Num]);
             }
 
             // pop text
             const popText = (text, color, left, top, width) => {
-                console.log(`left=${left} top=${top} width=${width}`);
                 $("#panel").append(`<div class="popText" style="color:${color}; left:${left}; top:${top}; width:${width}">${text}</div>`);
                 $(`.popText`).animate({ top: "-=50px" }, 500).fadeTo(500, 0, function () {
                     $(this).remove();
                 })
+            }
+
+            // 用名字找ItemData單筆資料
+            const getItemByName = (name) => {
+                let data = itemData.filter(item => name == item.name)
+                return data[0]
             }
 
             // 隨機數字
@@ -248,7 +290,6 @@
                 setTimeout(() => {
                     $("#game-result").fadeTo(500, 1);
                     $("#home").css("pointer-events", "all")
-                    audioPlay(soundData.end);
 
                 }, 1000);
 
@@ -279,9 +320,8 @@
 
             //換關卡
             const levelChange = (num) => {
+                // 如果還有下一關
                 if (level > 0 && level <= 3) {
-                    // 如果還有下一關
-
                     console.log("換關卡中");
                     isLoading = true;
 
@@ -309,9 +349,6 @@
                         }, tl / 10);
 
                         setTimeout(() => {
-                            audioPlay(soundData.level[level - 1]);
-
-
                             $("#panel").removeClass("blur");
                             // 打開HUD
                             $("#HUD").fadeTo(1000, 1);
@@ -336,28 +373,38 @@
                 }
             }
 
-            $("#home").click(function () {
-                $("#game-result").fadeTo(200, 0);
-                sceneChange(0)
-                $("#home").css("pointer-events", "none")
+            // 點擊 關於我
+            $('#about-me').click(function () {
+                $('#about-me-content').fadeTo(500, openAbout ? 0 : 1)
+                openAbout = !openAbout
             })
 
+            // 點擊 遊戲結束
             $("#over-btn").click(function () {
                 gameOver();
             })
-            $("#home-btn").click(function () {
+
+            // 點擊 回首頁
+            $(".home-btn").click(function () {
+                playOneShot(soundData.home)
+                $('#menu').fadeTo(2500, 1);
+                $(".menu-btn").css('pointer-events', 'all')
                 $("#game-result").fadeTo(200, 0);
                 $("#HUD").fadeTo(200, 0);
                 level = 0;
                 sceneChange(0)
                 $("#home").css("pointer-events", "none")
             })
+
+            // 點擊 下一關
             $("#next-btn").click(function () {
                 level++;
                 levelChange(level);
             })
 
+            // 點擊繼續
             $("#next-level-btn").click(function () {
+                playOneShot(soundData.next)
                 $("#time-out").fadeTo(300, 0, function () {
                     $("#panel").removeClass("blur")
                     level++;
@@ -369,14 +416,20 @@
             })
 
             //遊戲開始按鈕
-            $("#start-btn").click(function () {
+            $(".start-btn").click(function () {
+                playOneShot(soundData.next)
+
+
+                $('#menu').fadeTo(200, 0);
+                $(".menu-btn").css('pointer-events', 'none')
+
                 isPlaying = true;
 
                 level = 1;
                 levelChange(level)
 
                 // 停用開始按鈕
-                $(this).attr("disabled", true);
+                $("#start-btn").attr("disabled", true);
 
                 // 重設
                 score = 0;
@@ -405,6 +458,7 @@
 
 
                     if (life <= 0) {
+                        console.log("你死了");
                         life = 0;
                         // 如果玩家死掉了，就結束遊戲
                         $("#dead").fadeTo(100, 1, function () {
@@ -416,10 +470,9 @@
                                 $(this).fadeTo(300, 0);
                             }, 1500);
                         })
-
-                        console.log("你死了");
                     }
                     else if (timeleft == 0) {
+                        console.log("時間到");
                         isLoading = true;
                         isPlaying = false;
                         // 時間到換關卡
@@ -428,7 +481,6 @@
                         $("#next-level-btn").css("pointer-events", "all")
                         $("#panel").css("pointer-events", "none")
 
-                        console.log("時間到");
                     }
                     else {
                         // 10次隨機裡面，如果符合機率就產生東西
@@ -441,9 +493,46 @@
                         }
                     }
                 }, 1000);
-
-
             })
+
+            //點擊item事件
+            $("#game").on("mousedown", "img", function () {
+                if (!isPlaying) {
+                    return;
+                }
+
+                if (isEnemy($(this))) {
+                    // 點到的怪物計分
+                    let item = getItemByName($(this).attr('name'))
+                    playOneShot(item.sfxDead)
+                    score += item.score;
+                    popText(item.score, "#f00", $(this).css("left"), $(this).css("top"), $(this).css("width"));
+
+                    $(this).addClass("dead")
+                    $(this).attr("src", "./images/blood.png")
+                    $(this).stop();
+                    $(this).css({
+                        height: `100px`,
+                        width: `200px`
+                    })
+                    $(this).fadeOut("slow");
+
+                    changeScore(score);
+                }
+                else {
+                    playOneShot(soundData.life);
+                    life++;
+                    changeLife(life);
+                    popText(1, "#0f0", $(this).css("left"), $(this).css("top"), $(this).css("width"));
+
+                    $(this).remove();
+                    $(this).stop();
+                }
+
+                $(this).css("pointer-events", "none");
+                console.log("click " + $(this).attr('name'));
+            })
+
 
             //創建一個東西
             const createItem = (num) => {
@@ -451,11 +540,7 @@
                 src = itemData[num].srcNormal;
                 name = itemData[num].name;
 
-                // 測試
-                // src = "./boomer/boomer.gif"
-                // name = "boomer";
-
-                $(`#panel`).append(`<img src=${src} id=item${itemid} class=${name}>`);
+                $(`#panel`).append(`<img src=${src} id=item${itemid} class=${name} name=${name}>`);
 
                 setItemPosition($(`#item${itemid}`));
                 moveItem($(`#item${itemid}`))
@@ -468,122 +553,64 @@
                 return item.hasClass("boomer") || item.hasClass("tank") || item.hasClass("witch") || item.hasClass("chager") || item.hasClass("smoke") || item.hasClass("tank-run");
             }
 
-            //取得物品名稱
-            const getItemName = (item) => {
-                let name = "";
-
-                if (item.hasClass("boomer")) { name = "boomer"; }
-                else if (item.hasClass("tank")) { name = "tank"; }
-                else if (item.hasClass("tank-run")) { name = "tank-run"; }
-                else if (item.hasClass("witch")) { name = "witch"; }
-                else if (item.hasClass("chager")) { name = "chager"; }
-                else if (item.hasClass("smoke")) { name = "smoke"; }
-                else if (item.hasClass("life")) { name = "life"; }
-
-                return name;
-            }
-
             //設定東西的位置
             const setItemPosition = (item) => {
                 item.fadeTo(10, 0, function () {
-                    console.log("Set " + getItemName(item) + " Position");
-                    for (let obj of itemData) {
-                        if (getItemName(item) == obj.name) {
-                            item.css(obj.setPosition[level - 1][0])
-                        }
-                    }
+                    console.log("Set " + item.attr('name') + " Position");
+                    item.offset({ top: rand(700), left: 200 + rand(1040) })
+                    // item.css(getItemByName(item.attr('name')).setPosition[level - 1][0])
                 })
             }
 
             // 移動東西
             const moveItem = (item) => {
                 item.fadeTo("slow", 1, function () {
-                    for (let obj of itemData) {
-                        if (getItemName(item) == obj.name) {
-                            if (isEnemy(item)) {
-                                item.animate(obj.moveTo[level - 1][0], 1500, function () {
-                                    item.attr("src", obj.srcAtk)
-                                    setTimeout(() => { atk(item) }, obj.atkWait);
-                                })
-                            }
-                            else {
-                                item.animate(obj.moveTo[0][0], 500).animate(obj.moveTo[0][1], 500, function () {
-                                    moveItem(item)
-                                })
+                    let obj = getItemByName(item.attr('name'))
+                    if (isEnemy(item)) {
+                        item.animate(
+                            {
+                                height: obj.moveHeight,
+                                top: 700 - rand(400),
+                                left: 1440 * level + rand(1040) + 200
+                            }, 1500, function () {
+                                item.attr("src", obj.srcAtk)
 
-                            }
-                        }
+                                setTimeout(() => {
+                                    atk(item)
+                                    playOneShot(obj.sfxAtk)
+                                }, obj.atkWait);
+                            })
+                    }
+                    else {
+                        item.animate({
+                            height: `100px`,
+                            top: `-=50px`
+                        }, 500).animate({
+                            height: `100px`,
+                            top: `+=50px`
+                        }, 500, function () {
+                            moveItem(item)
+                        })
+
                     }
                 })
-
             }
 
             //怪物攻擊
             const atk = (enemy) => {
                 if (isPlaying && !enemy.hasClass("dead")) {
                     $("#hurt").fadeTo(150, 0.3).fadeTo(200, 0, function () {
-                        console.log(getItemName(enemy) + " atk you");
-                        for (let obj of itemData) {
-                            if (getItemName(enemy) == obj.name) {
-                                life -= obj.atk;
-                            }
-                        }
+                        console.log(enemy.attr('name') + " atk you");
+                        playOneShot(soundData.hurt[rand(5)])
+                        life -= getItemByName(enemy.attr('name')).atk
                         changeLife(life);
-
                     })
                 }
             }
 
-            //點擊item事件
-            $("#game").on("mousedown", "img", function () {
-                if (!isPlaying) {
-                    return;
-                }
-
-                if (isEnemy($(this))) {
-                    // 點到的怪物計分
-                    for (let obj of itemData) {
-                        if (getItemName($(this)) == obj.name) {
-                            score += obj.score;
-                            popText(obj.score, "#f00", $(this).css("left"), $(this).css("top"), $(this).css("width"));
-                        }
-                    }
-
-                    $(this).addClass("dead")
-                    $(this).attr("src", "./images/blood.png")
-                    $(this).stop();
-                    $(this).css({
-                        height: `100px`,
-                        width: `200px`
-                    })
-                    $(this).fadeOut("slow");
-
-
-
-
-                    changeScore(score);
-                }
-                else {
-                    life++;
-                    changeLife(life);
-                    popText(1, "#0f0", $(this).css("left"), $(this).css("top"), $(this).css("width"));
-
-                    $(this).remove();
-                    $(this).stop();
-
-                }
-
-                $(this).css("pointer-events", "none");
-
-                console.log("click " + getItemName($(this)));
-            })
-
-
 
 
         })
-
-
     </script>
 </body>
 
