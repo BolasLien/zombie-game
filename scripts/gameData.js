@@ -166,10 +166,10 @@ const itemData = [
 
     {
         "name": "witch",
-        "srcNormal": "./witch/witch.gif",
-        "srcAtk": "./witch/witch.gif",
-        "sfxAtk": "./music/boomer_shoved_01.wav",
-        "sfxDead": "./music/male_boomer_pain_1.wav",
+        "srcNormal": "./witch/witch-run.gif",
+        "srcAtk": "./witch/witch-run.gif",
+        "sfxAtk": "./music/female_distantscream1.wav",
+        "sfxDead": "./music/female_death_1.wav",
         "atkWait": 500,
         "atk": 1,
         "score": 2,
