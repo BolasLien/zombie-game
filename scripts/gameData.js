@@ -92,9 +92,22 @@ const levelData = [
 ]
 
 const soundData = {
-    bg: ["./music/l4d2_c4_pc.mp3", "./music/bloodharvestor2.wav", "./music/bloodharvestor2.wav", "./music/tank.wav", "./music/themonsterswithout.wav"],
+    bg: [
+        "./music/l4d2_c4_pc.mp3",
+        "./music/bloodharvestor2.wav",
+        "./music/bloodharvestor2.wav",
+        "./music/tank.wav",
+        "./music/themonsterswithout.wav"
+    ],
     life: "./music/gift_pickup.wav",
     next: "./music/alert_clink.wav",
     home: "./music/menu_accept.wav",
-    hurt: ['./music/hurtminor01.wav', './music/hurtminor02.wav', './music/hurtminor03.wav', './music/hurtminor04.wav', './music/hurtminor05.wav', './music/hurtminor06.wav']
+    hurt: [
+        './music/hurtminor01.wav',
+        './music/hurtminor02.wav',
+        './music/hurtminor03.wav',
+        './music/hurtminor04.wav',
+        './music/hurtminor05.wav',
+        './music/hurtminor06.wav'
+    ]
 }
