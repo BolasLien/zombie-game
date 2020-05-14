@@ -168,19 +168,6 @@
             let bgPlayer = new Audio();
             let fxPlayer = new Audio();
 
-            $('#panel').on('mousemove', function (e) {
-                $('#x').text(e.offsetX)
-                $('#y').text(e.offsetY)
-            })
-
-
-            $('#panel').on('click', function (e) {
-                $("#panel").append(`<div class="popText" style="color:#ff0; text-align:center;"></div>`);
-                $(`.popText`).offset({ top: e.offsetY, left: e.offsetX })
-                let p = $(`.popText`).offset()
-                // console.log('top=' + p.top + " left=" + p.left);
-            })
-
             const playBg = (src) => {
                 bgPlayer.src = src;
                 bgPlayer.play();
