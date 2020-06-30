@@ -1,4 +1,5 @@
 # 打殭屍小遊戲
+點這裡進入 https://bolaslien.github.io/js-da-jiang-shi-BolasLien/
 
 ## 練習內容
 * css定位
